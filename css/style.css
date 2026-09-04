@@ -480,7 +480,9 @@ h2 {
 .story .body-copy strong { font-size: 28px; }
 .story-clouds { bottom: -95px; left: -14%; width: 128%; opacity: .84; }
 .story-twins { position: relative; z-index: 2; width: auto; max-width: min(74%, 300px); max-height: clamp(200px, 33svh, 310px); height: auto; flex: 1 1 auto; min-height: 0; margin: var(--gap-xs) auto; filter: drop-shadow(0 11px 11px rgba(192, 111, 141, .13)); }
-
+.story {
+  padding-top: calc(var(--panel-top) + 15px);
+}
 /* ==========================================================================
    8. SEÇÃO 3: TICKET (INGRESSO VIP E CARROSSEL) - ATUALIZADO
    ========================================================================== */
@@ -874,10 +876,40 @@ h2 {
 .guests h2 { margin-bottom: var(--space-xs); font-size: clamp(29px, 7.7vw, 35px); }
 .section-intro { margin: 0 0 10px; color: #685b61; font-size: 12px; font-weight: 700; }
 .guest-form { display: flex; width: min(100%, 326px); flex: 1 1 auto; flex-direction: column; min-height: 0; margin: 0 auto; }
-#guest-list { display: grid; flex: 1 1 auto; min-height: 0; gap: 6px; overflow-y: auto; padding: 0 3px 4px; overscroll-behavior: contain; }
+#guest-list {
+  display: grid;
+  flex: 1 1 auto;
+  min-height: 0;
 
+  gap: 6px;
+
+  align-content: start; /* não deixa poucos cards se esticarem */
+  grid-auto-rows: 36px; /* mantém todos no tamanho compacto */
+
+  overflow-y: auto;
+  padding: 0 3px 4px;
+  overscroll-behavior: contain;
+}
 /* Item/Linha com checkbox de convidado */
-.guest-row { display: flex; min-height: 36px; align-items: center; gap: 8px; padding: 4px 10px; border: 1px solid rgba(232, 165, 186, .66); border-radius: 10px; background: rgba(255, 250, 244, .94); box-shadow: 0 4px 0 rgba(242, 201, 211, .58); text-align: left; }
+.guest-row {
+  display: flex;
+
+  height: 36px;
+  min-height: 36px;
+
+  align-items: center;
+  gap: 8px;
+
+  padding: 4px 10px;
+
+  border: 1px solid rgba(232, 165, 186, .66);
+  border-radius: 10px;
+
+  background: rgba(255, 250, 244, .94);
+  box-shadow: 0 4px 0 rgba(242, 201, 211, .58);
+
+  text-align: left;
+}
 .guest-row input { width: 18px; height: 18px; margin: 0; appearance: none; border: 2px solid #ed9ab5; border-radius: 6px; background: #fff; transition: .2s ease; }
 .guest-row input:checked { border-color: #ef6a95; background: #f985aa; box-shadow: inset 0 0 0 4px #fff; }
 .guest-row label { flex: 1; color: #55494f; font-size: 11.5px; font-weight: 800; }
@@ -903,6 +935,36 @@ h2 {
 .success-confetti { z-index: -2; top: 150px; left: -18%; width: 136%; opacity: .42; }
 .success-balloons { z-index: -1; top: 255px; right: -97px; width: 179px; opacity: .75; transform: rotate(11deg); }
 .success-twins { position: relative; z-index: 2; width: auto; max-width: min(64%, 255px); max-height: clamp(185px, 30svh, 285px); height: auto; flex: 1 1 auto; min-height: 0; margin: var(--gap-xs) auto; filter: drop-shadow(0 11px 12px rgba(125, 175, 196, .16)); }
+.success-maps-button {
+  position: relative;
+  z-index: 4;
+
+  display: block;
+
+  width: min(78%, 300px);
+
+  flex: 0 0 auto;
+
+  margin: 8px auto 0;
+
+  filter: drop-shadow(
+    0 7px 8px rgba(207, 73, 122, .18)
+  );
+
+  transition: transform .2s ease;
+}
+
+.success-maps-button img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.success-maps-button:hover,
+.success-maps-button:focus-visible {
+  transform: scale(1.03);
+}
+
 
 /* ==========================================================================
    14. UTILITÁRIOS, ANIMAÇÕES E NOTIFICAÇÃO (TOAST)
