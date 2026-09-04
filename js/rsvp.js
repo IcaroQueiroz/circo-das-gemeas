@@ -1,9 +1,10 @@
-async function submitRsvp({ code, status, guests }) {
+async function submitRsvp({ code, status, guests, extraGuests = [] }) {
   const payload = {
     action: 'rsvp',
     code,
     status,
-    guests
+    guests,
+    extraGuests
   };
 
   let response;
@@ -38,8 +39,33 @@ function createRsvpController({ invite, code, onConfirmed, onDeclined }) {
   const rsvpStatus = document.querySelector('#rsvp-status');
   const guestStatus = document.querySelector('#guest-status');
   const guestSection = document.querySelector('#convidados');
-  let guestCount = invite?.guests?.length || 0;
+  const extraGuests = [];
+  const selectedGuestIds = new Set((invite?.guests || []).map((guest) => String(guest.guest_id ?? guest.id)));
+  let nextExtraNumber = 1;
   let isSubmitting = false;
+  const guestTypeModal = document.querySelector('#guest-type-modal');
+  const guestTypeBackdrop = document.querySelector('#guest-type-modal-backdrop');
+  const guestTypeCancel = document.querySelector('#guest-type-cancel');
+  const guestTypeOptions = [...guestTypeModal.querySelectorAll('[data-extra-type]')];
+
+  const updateAddGuestButton = () => {
+    const limitReached = extraGuests.length >= 2;
+    addGuestButton.disabled = limitReached;
+    addGuestButton.textContent = limitReached ? 'Limite de convidados extras atingido' : '＋ Adicionar outro convidado';
+  };
+
+  const closeGuestTypeModal = (restoreFocus = true) => {
+    guestTypeModal.classList.add('is-hidden');
+    guestTypeModal.setAttribute('aria-hidden', 'true');
+    if (restoreFocus) addGuestButton.focus();
+  };
+
+  const openGuestTypeModal = () => {
+    if (extraGuests.length >= 2) return;
+    guestTypeModal.classList.remove('is-hidden');
+    guestTypeModal.setAttribute('aria-hidden', 'false');
+    guestTypeOptions[0]?.focus();
+  };
 
   const getErrorMessage = (error) => {
     const messages = {
@@ -57,16 +83,22 @@ function createRsvpController({ invite, code, onConfirmed, onDeclined }) {
   };
 
   const renderGuests = () => {
-    guestList.replaceChildren(...(invite?.guests || []).map((guest) => {
-      const guestId = guest.guest_id ?? guest.id;
+    const guests = [...(invite?.guests || []), ...extraGuests];
+    guestList.replaceChildren(...guests.map((guest) => {
+      const guestId = String(guest.guest_id ?? guest.id);
       const row = document.createElement('div');
       row.className = 'guest-row';
+      if (guest.isExtra) row.classList.add('guest-row-extra');
       const input = document.createElement('input');
       input.type = 'checkbox';
       input.id = `guest-${guestId}`;
       input.name = 'guest';
       input.value = guestId;
-      input.checked = Boolean(guest.confirmed ?? guest.selected);
+      input.checked = selectedGuestIds.has(guestId);
+      input.addEventListener('change', () => {
+        if (input.checked) selectedGuestIds.add(guestId);
+        else selectedGuestIds.delete(guestId);
+      });
       const label = document.createElement('label');
       label.htmlFor = input.id;
       label.append(document.createTextNode(guest.name));
@@ -78,6 +110,22 @@ function createRsvpController({ invite, code, onConfirmed, onDeclined }) {
       heart.setAttribute('aria-hidden', 'true');
       heart.textContent = '♡';
       row.append(input, label, heart);
+      if (guest.isExtra) {
+        const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.className = 'guest-delete';
+        deleteButton.setAttribute('aria-label', 'Excluir convidado extra');
+        deleteButton.textContent = '🗑';
+        deleteButton.addEventListener('click', () => {
+          const index = extraGuests.findIndex((extra) => extra.id === guest.id);
+          if (index < 0) return;
+          extraGuests.splice(index, 1);
+          selectedGuestIds.delete(guestId);
+          renderGuests();
+          updateAddGuestButton();
+        });
+        row.append(deleteButton);
+      }
       return row;
     }));
   };
@@ -121,8 +169,13 @@ function createRsvpController({ invite, code, onConfirmed, onDeclined }) {
   guestForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (isSubmitting) return;
-    const selectedIds = [...guestForm.querySelectorAll('input[name="guest"]:checked')].map((input) => input.value);
-    if (!selectedIds.length) {
+    const selectedIds = (invite?.guests || [])
+      .map((guest) => String(guest.guest_id ?? guest.id))
+      .filter((guestId) => selectedGuestIds.has(guestId));
+    const selectedExtraGuests = extraGuests
+      .filter((guest) => selectedGuestIds.has(guest.id))
+      .map(({ id, name, type }) => ({ clientId: id, name, type }));
+    if (!selectedIds.length && !selectedExtraGuests.length) {
       guestStatus.textContent = 'Selecione pelo menos uma pessoa para confirmar.';
       return;
     }
@@ -132,8 +185,8 @@ function createRsvpController({ invite, code, onConfirmed, onDeclined }) {
     guestStatus.textContent = 'Registrando resposta...';
 
     try {
-      await submitRsvp({ code, status: 'confirmed', guests: selectedIds });
-      const response = { status: 'confirmed', inviteCode: code, family: invite.familyLabel, invitedGuests: invite.guests, confirmedGuests: selectedIds, respondedAt: new Date().toISOString() };
+      await submitRsvp({ code, status: 'confirmed', guests: selectedIds, extraGuests: selectedExtraGuests });
+      const response = { status: 'confirmed', inviteCode: code, family: invite.familyLabel, invitedGuests: invite.guests, confirmedGuests: selectedIds, extraGuests: selectedExtraGuests, respondedAt: new Date().toISOString() };
       sessionStorage.setItem(`rsvp:${code}`, JSON.stringify(response));
       guestStatus.textContent = '';
       onConfirmed?.(response);
@@ -144,15 +197,28 @@ function createRsvpController({ invite, code, onConfirmed, onDeclined }) {
       setButtonBusy(submitButton, false);
     }
   });
-  addGuestButton.addEventListener('click', () => {
-    guestCount += 1;
-    const id = `extra-${guestCount}`;
-    invite.guests.push({ id, guest_id: id, name: `Convidado ${guestCount}`, type: 'Convidado', confirmed: false, selected: false });
+  addGuestButton.addEventListener('click', openGuestTypeModal);
+  guestTypeOptions.forEach((option) => option.addEventListener('click', () => {
+    if (extraGuests.length >= 2) return;
+    const type = option.dataset.extraType;
+    const id = `extra-${nextExtraNumber}`;
+    const guest = { id, name: `Convidado extra ${nextExtraNumber}`, type, selected: true, isExtra: true };
+    nextExtraNumber += 1;
+    extraGuests.push(guest);
+    selectedGuestIds.add(id);
+    closeGuestTypeModal();
     renderGuests();
+    updateAddGuestButton();
     document.querySelector(`#guest-${id}`)?.focus();
+  }));
+  guestTypeCancel.addEventListener('click', () => closeGuestTypeModal());
+  guestTypeBackdrop.addEventListener('click', () => closeGuestTypeModal());
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !guestTypeModal.classList.contains('is-hidden')) closeGuestTypeModal();
   });
 
   renderGuests();
+  updateAddGuestButton();
   return { setStep };
 }
 

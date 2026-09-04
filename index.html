@@ -40,7 +40,9 @@
             <img class="hero-twins" src="assets/images/characters/personagens-sentadas-pedestal.png" alt="Liz e Luna sentadas em um pedestal de circo" />
           </div>
           <div class="hero-footer reveal">
-            <a class="primary-button" href="#apresentacao">Entrar no circo <span aria-hidden="true">↗</span></a>
+            <a class="primary-button hero-entry-image-button is-loading" href="#" aria-label="Carregando convite" aria-disabled="true">
+              <img id="hero-entry-image" src="assets/images/ui/carregando.png" alt="Carregando convite" />
+            </a>
           </div>
         </section>
 
@@ -55,7 +57,7 @@
           </div>
           <img class="story-twins reveal" src="assets/images/characters/personagens-em-pe-maos-dadas.png" alt="Liz e Luna em pé, de mãos dadas" loading="lazy" />
           <a class="asset-next-button section-next soft" href="#informacoes" aria-label="Rolar para as informações">
-            <img src="assets/images/ui/botao-continuar-dourado.png" alt="" aria-hidden="true" loading="lazy" />
+            <img src="assets/images/ui/botao-continuar.png" alt="" aria-hidden="true" loading="lazy" />
           </a>
         </section>
 
@@ -72,10 +74,7 @@
               <a class="ticket-button-img" id="ticket-rsvp-btn" href="#rsvp" aria-label="Garanta seu ingresso. Clique aqui."><img   src="assets/images/ui/garanta-seu-ingresso-clique-aqui.png" alt="Garanta seu ingresso - Clique aqui"loading="lazy" /></a>
             </div>
           </div>
-          <img class="ticket-carousel reveal" src="assets/images/circus/carrossel-02.png" alt="Carrossel em tons candy" loading="lazy" />
-          <a class="asset-next-button section-next soft" href="#local" aria-label="Rolar para a localização">
-            <img src="assets/images/ui/botao-continuar.png" alt="" aria-hidden="true" loading="lazy" />
-          </a>
+          <img class="ticket-clouds reveal" src="assets/images/decorations/nuvens-candy-01.png" alt="" aria-hidden="true" loading="lazy" />
         </section>
 
         <section class="destination section-panel" id="local" aria-labelledby="destination-title">
@@ -92,7 +91,7 @@
               </div>
             </div>
             <a class="destination-btn-img" id="dest-maps-btn" href="#map-modal" aria-label="Como chegar ao nosso circo">
-              <img src="assets/images/ui/como-chegar.png" alt="Como chegar" loading="lazy" />
+              <img src="assets/images/ui/navegar.png" alt="Navegar até o circo" loading="lazy" />
             </a>
           </div>
           <div class="destination-stage" aria-hidden="true">
@@ -119,9 +118,8 @@
             <p class="countdown-fallback" id="countdown-message"></p>
           </div>
           <img class="countdown-twins reveal" src="assets/images/characters/personagens-deitadas-pedestal.png" alt="Liz e Luna deitadas sobre um pedestal de circo" loading="lazy" />
-          <a class="primary-button" href="#local" id="countdown-location-btn">Ver Local e Endereço <span aria-hidden="true">↗</span></a>
-          <a class="asset-next-button section-next soft" href="#rsvp" aria-label="Rolar para a confirmação">
-            <img src="assets/images/ui/botao-continuar.png" alt="" aria-hidden="true" loading="lazy" />
+          <a class="countdown-location-image-button image-button" href="#local" id="countdown-location-btn" aria-label="Como chegar">
+            <img src="assets/images/ui/como-chegar.png" alt="Como chegar" loading="lazy" />
           </a>
         </section>
 
@@ -131,15 +129,12 @@
             <h2 id="rsvp-title">Reserve seu lugar<br />no espetáculo</h2>
             <p class="rsvp-greeting" id="family-greeting">Família convidada,<br />vocês estarão conosco?</p>
             <div class="rsvp-actions" id="rsvp-actions">
-              <button class="primary-button action-button" type="button" data-rsvp="yes"><span class="action-icon" aria-hidden="true">♥</span><span class="action-copy"><b>Sim!</b><small>estaremos lá</small></span></button>
-              <button class="secondary-button action-button" type="button" data-rsvp="no"><span class="action-icon" aria-hidden="true">★</span><span class="action-copy"><b>Infelizmente</b><small>não poderemos</small></span></button>
+              <button class="primary-button action-button rsvp-image-button" type="button" data-rsvp="yes"><img src="assets/images/ui/sim-estaremos-la.png" alt="Sim! Estaremos lá" /></button>
+              <button class="secondary-button action-button rsvp-image-button" type="button" data-rsvp="no"><img src="assets/images/ui/infelizmente-n-podemos.png" alt="Infelizmente não poderemos" /></button>
             </div>
             <p class="inline-status" id="rsvp-status" role="status"></p>
           </div>
           <img class="rsvp-tent" src="assets/images/circus/tenda-circo-02.png" alt="" aria-hidden="true" loading="lazy" />
-          <a class="asset-next-button section-next soft" href="#convidados" aria-label="Rolar para a seleção de convidados">
-            <img src="assets/images/ui/botao-continuar.png" alt="" aria-hidden="true" loading="lazy" />
-          </a>
         </section>
 
         <section class="guests section-panel is-hidden" id="convidados" aria-labelledby="guests-title" aria-hidden="true">
@@ -152,14 +147,24 @@
             <form id="guest-form" class="guest-form">
               <div id="guest-list"></div>
               <button class="add-guest" id="add-guest" type="button">＋ Adicionar outro convidado</button>
-              <button class="primary-button confirm-button" type="submit">Confirmar presença <span aria-hidden="true">↗</span></button>
+              <button class="primary-button confirm-button image-button" type="submit"><img src="assets/images/ui/confirmar-presenca.png" alt="Confirmar presença" /></button>
             </form>
             <p class="inline-status" id="guest-status" role="status"></p>
           </div>
-          <a class="asset-next-button section-next soft" href="#confirmacao" aria-label="Rolar para a confirmação enviada">
-            <img src="assets/images/ui/botao-continuar.png" alt="" aria-hidden="true" loading="lazy" />
-          </a>
         </section>
+
+        <div class="guest-type-modal is-hidden" id="guest-type-modal" role="dialog" aria-modal="true" aria-labelledby="guest-type-title" aria-hidden="true">
+          <div class="guest-type-modal-backdrop" id="guest-type-modal-backdrop"></div>
+          <div class="guest-type-modal-card">
+            <h3 id="guest-type-title">Quem vamos adicionar?</h3>
+            <p>Escolha o tipo de convidado:</p>
+            <div class="guest-type-options">
+              <button type="button" class="guest-type-image-button" data-extra-type="Adulto"><img src="assets/images/ui/adulto.png" alt="Adulto" /></button>
+              <button type="button" class="guest-type-image-button" data-extra-type="Criança"><img src="assets/images/ui/crianca.png" alt="Criança" /></button>
+            </div>
+            <button type="button" id="guest-type-cancel">Cancelar</button>
+          </div>
+        </div>
 
         <section class="success section-panel is-hidden" id="confirmacao" aria-labelledby="success-title" aria-hidden="true">
           <img class="scene-asset top-bunting" src="assets/images/decorations/bandeirolas-01.png" alt="" aria-hidden="true" loading="lazy" />
@@ -199,11 +204,11 @@
             <h3>Como deseja ir?</h3>
             <p>Escolha seu aplicativo preferido:</p>
             <div class="map-options">
-              <a class="map-choice-btn google-btn" id="link-gmaps" href="#" target="_blank" rel="noreferrer">
-                <span>📍</span> Google Maps
+              <a class="map-choice-btn map-choice-image" id="link-gmaps" href="#" target="_blank" rel="noreferrer" aria-label="Abrir no Google Maps">
+                <img src="assets/images/ui/gg-maps.png" alt="Google Maps" />
               </a>
-              <a class="map-choice-btn waze-btn" id="link-waze" href="#" target="_blank" rel="noreferrer">
-                <span>🚗</span> Waze
+              <a class="map-choice-btn map-choice-image" id="link-waze" href="#" target="_blank" rel="noreferrer" aria-label="Abrir no Waze">
+                <img src="assets/images/ui/waze.png" alt="Waze" />
               </a>
             </div>
             <button class="map-close-btn" id="map-close-btn" type="button">Cancelar</button>

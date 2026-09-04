@@ -270,6 +270,38 @@ h2 {
 .primary-button:hover, .secondary-button:hover { box-shadow: 0 9px 0 rgba(206, 78, 119, .18), 0 15px 28px rgba(213, 90, 133, .27), inset 0 1px rgba(255, 255, 255, .64); transform: translateY(-2px); }
 .primary-button:focus-visible, .secondary-button:focus-visible, .asset-next-button:focus-visible, .sound-toggle:focus-visible, .add-guest:focus-visible { outline: 3px solid #6baec8; outline-offset: 3px; }
 
+/* Botões que usam a própria arte PNG como superfície clicável. */
+.image-button, .hero-entry-image-button, .rsvp-image-button {
+  display: block;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  cursor: pointer;
+  transition: transform .2s ease;
+}
+.image-button img, .hero-entry-image-button img, .rsvp-image-button img, .destination-btn-img img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.image-button:hover, .hero-entry-image-button:hover, .rsvp-image-button:hover,
+.image-button:focus-visible, .hero-entry-image-button:focus-visible, .rsvp-image-button:focus-visible {
+  box-shadow: none;
+  transform: scale(1.03);
+}
+.image-button:focus, .image-button:focus-visible,
+.hero-entry-image-button:focus, .hero-entry-image-button:focus-visible,
+.rsvp-image-button:focus, .rsvp-image-button:focus-visible,
+.destination-btn-img:focus, .destination-btn-img:focus-visible,
+.success-maps-button:focus, .success-maps-button:focus-visible,
+.ticket-button-img:focus, .ticket-button-img:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
 /* Botão redondo de seta para descer tela */
 .asset-next-button { position: relative; z-index: 3; width: 45px; border-radius: 50%; filter: drop-shadow(0 5px 6px rgba(198, 98, 133, .18)); transition: transform .2s ease; }
 .asset-next-button:hover { transform: translateY(3px); }
@@ -456,10 +488,22 @@ h2 {
 }
 
 /* Botão Entrar no Circo */
-.hero-footer .primary-button {
+.hero-footer .hero-entry-image-button {
   width: min(84%, 280px);
-  min-height: 44px;
-  padding: 10px 18px;
+  -webkit-tap-highlight-color: transparent;
+}
+.hero-entry-image-button[aria-disabled="true"] { cursor: default; opacity: .8; }
+.hero-entry-image-button.is-loading { pointer-events: none; cursor: default; }
+.hero-entry-image-button.is-loading img { animation: heroButtonLoading 1.6s ease-in-out infinite; }
+.hero-entry-image-button.is-cta img { animation: heroButtonAttention 2.6s ease-in-out infinite; }
+.hero-entry-image-button.is-disabled img { animation: none; transform: none; }
+@keyframes heroButtonLoading {
+  0%, 100% { opacity: .9; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.015); }
+}
+@keyframes heroButtonAttention {
+  0%, 100% { filter: drop-shadow(0 4px 5px rgba(207, 73, 122, .12)); transform: translateY(0) scale(1); }
+  50% { filter: drop-shadow(0 8px 9px rgba(207, 73, 122, .22)); transform: translateY(-3px) scale(1.015); }
 }
 
 /* Caso a seta volte a existir nessa página */
@@ -483,11 +527,24 @@ h2 {
 .story {
   padding-top: calc(var(--panel-top) + 15px);
 }
-/* ==========================================================================
+.story .section-next img {
+  animation: storyNextAttention 2.6s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes storyNextAttention {
+  0%, 100% { filter: drop-shadow(0 4px 5px rgba(207, 73, 122, .12)); transform: translateY(0) scale(1); }
+  50% { filter: drop-shadow(0 7px 8px rgba(207, 73, 122, .22)); transform: translateY(3px) scale(1.05); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .story .section-next img { animation: none; }
+}
+/* ===========================================================================
    8. SEÇÃO 3: TICKET (INGRESSO VIP E CARROSSEL) - ATUALIZADO
    ========================================================================== */
 
 .ticket { 
+  position: relative;
+  overflow: hidden;
   padding-top: calc(var(--panel-top) - 34px); /* sobe a composição geral */
   padding-right: var(--content-gutter); 
   padding-left: var(--content-gutter); 
@@ -618,30 +675,19 @@ h2 {
   font-size: 18px; 
 }
 
-/* Carrossel menor e mais comportado para não disputar com o card */
-.ticket-carousel { 
-  position: relative; 
-
-  z-index: 1; /* fica atrás do ticket, que está com z-index maior */
-
-  width: clamp(
-    210px,
-    62vw,
-    300px
-  ); /* aumenta bastante o carrossel */
-
-  max-height: clamp(
-    130px,
-    20svh,
-    190px
-  );
-
-  margin: -28px auto 0; /* sobe o carrossel e faz ele entrar atrás do ticket */
-
-  filter: drop-shadow(
-    0 8px 8px rgba(141, 170, 192, .16)
-  );
-
+/* Nuvens baixas e suaves, atrás do ingresso */
+.ticket-clouds {
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  right: auto;
+  bottom: -12%;
+  width: 130%;
+  max-width: none;
+  height: auto;
+  transform: translateX(-50%);
+  opacity: .9;
+  filter: drop-shadow(0 8px 8px rgba(141, 170, 192, .16));
   pointer-events: none;
 }
 
@@ -772,12 +818,6 @@ h2 {
   transform: scale(1.03); 
 }
 
-.destination-btn-img:focus-visible { 
-  outline: 3px solid #6baec8; 
-  outline-offset: 4px; 
-  border-radius: 999px; 
-}
-
 /* Cenário Inferior (Placa, Tenda e Nuvens de Base) */
 .destination-stage { 
   position: absolute;
@@ -794,7 +834,7 @@ h2 {
 .destination-sign { 
   position: absolute; 
   z-index: 3; 
-  bottom: clamp(0px, .8svh, 8px);
+  bottom: clamp(38px, 5svh, 55px);
   left: 0;
   width: min(48vw, 185px);
   filter: drop-shadow(0 7px 7px rgba(198, 103, 136, .17)); 
@@ -803,9 +843,9 @@ h2 {
 /* Tenda de circo ao fundo */
 .destination-tent { 
   position: absolute; 
-  z-index: 1; 
+  z-index: 2;
   right: -6%;
-  bottom: clamp(-10px, -1svh, 0px);
+  bottom: clamp(28px, 4svh, 45px);
   width: min(54vw, 225px);
   max-width: none; 
   opacity: .95; /* Maior nitidez */
@@ -815,9 +855,9 @@ h2 {
 /* Nuvens brancas/candy cobrindo o pé do pedestal da placa e a base da tenda */
 .destination-clouds { 
   position: absolute; 
-  z-index: 4; 
+  z-index: 1;
   left: 50%;
-  bottom: -24px;
+  bottom: -55px;
   width: 135%;
   max-width: none; 
   transform: translateX(-50%);
@@ -847,6 +887,9 @@ h2 {
 .countdown-clouds { bottom: -124px; left: -15%; width: 130%; opacity: .82; }
 .countdown-twins { position: relative; z-index: 2; width: auto; max-width: min(74%, 300px); max-height: clamp(190px, 30svh, 295px); height: auto; flex: 1 1 auto; min-height: 0; margin: var(--gap-xs) auto; filter: drop-shadow(0 10px 12px rgba(105, 170, 202, .16)); }
 .countdown .map-trigger-btn { position: relative; z-index: 4; flex: 0 0 auto; margin-top: 0; }
+.countdown-location-image-button { position: relative; z-index: 4; display: block; width: min(78%, 280px); margin: 0 auto; padding: 0; border: 0; background: transparent; box-shadow: none; }
+.countdown-location-image-button img { display: block; width: 100%; height: auto; animation: confirmPresenceHint 3.1s ease-in-out infinite; }
+.countdown-location-image-button:focus, .countdown-location-image-button:focus-visible { outline: none; box-shadow: none; }
 
 /* ==========================================================================
    10. SEÇÃO 5: RSVP (CONFIRMAÇÃO DE PRESENÇA)
@@ -859,11 +902,8 @@ h2 {
 
 /* Botões Sim / Não */
 .rsvp-actions { display: grid; width: min(100%, 292px); gap: var(--space-xs); margin: 0 auto; }
-.action-button { position: relative; min-height: 57px; flex-direction: row; gap: var(--space-sm); padding: 8px 18px; font-size: 15px; }
-.action-icon { display: grid; width: 19px; flex: 0 0 19px; place-items: center; color: #fff5bd; font-size: 16px; }
-.action-copy { display: grid; min-width: 0; justify-items: center; gap: 1px; }
-.action-copy b { font-size: 15px; }
-.action-button small { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: none; }
+.rsvp-image-button { width: 100%; }
+.rsvp-image-button:disabled { cursor: not-allowed; opacity: .62; }
 .rsvp-tent { position: relative; z-index: 2; width: auto; max-width: min(80%, 280px); max-height: clamp(145px, 24svh, 240px); height: auto; flex: 1 1 auto; min-height: 0; margin: var(--gap-xs) auto; opacity: 1; }
 .inline-status { position: relative; z-index: 4; min-height: 1em; margin: 8px 0 0; color: var(--rose-deep); font-size: 11px; font-weight: 700; }
 .rsvp .section-next { margin-top: var(--gap-xs); }
@@ -872,7 +912,7 @@ h2 {
    11. SEÇÃO 6: GUESTS (SELEÇÃO DE CONVIDADOS)
    ========================================================================== */
 .guests::before { background: linear-gradient(180deg, #fff8f2 0%, #ffecf0 66%, #ffe0ea 100%); }
-.guests .section-content { display: flex; width: min(100%, 380px); flex: 1 1 auto; flex-direction: column; min-height: 0; padding-top: clamp(36px, 5.5svh, 54px); }
+.guests .section-content { display: flex; width: min(100%, 380px); flex: 1 1 auto; flex-direction: column; min-height: 0; padding-top: clamp(51px, calc(5.5svh + 15px), 69px); }
 .guests h2 { margin-bottom: var(--space-xs); font-size: clamp(29px, 7.7vw, 35px); }
 .section-intro { margin: 0 0 10px; color: #685b61; font-size: 12px; font-weight: 700; }
 .guest-form { display: flex; width: min(100%, 326px); flex: 1 1 auto; flex-direction: column; min-height: 0; margin: 0 auto; }
@@ -916,7 +956,20 @@ h2 {
 .guest-row small { display: block; margin-top: 1px; color: #a17d89; font-size: 8.5px; font-weight: 700; }
 .guest-heart { color: var(--rose); font-size: 18px; }
 .add-guest { margin: 12px 0 14px; padding: 0; color: #de5480; background: transparent; font-size: 11px; font-weight: 800; }
-.confirm-button { width: 100%; }
+.confirm-button.image-button { width: 100%; }
+.confirm-button.image-button img, #ticket-rsvp-btn img, .rsvp-image-button img { animation: confirmPresenceHint 3.1s ease-in-out infinite; }
+.confirm-button.image-button:disabled img { animation: none; }
+.rsvp-image-button:disabled img { animation: none; }
+.rsvp-image-button[data-rsvp="yes"] img { animation: confirmPresenceHint 3s ease-in-out infinite; }
+.rsvp-image-button[data-rsvp="no"] img { animation: confirmPresenceHint 3.4s ease-in-out -.9s infinite; }
+.rsvp-image-button:disabled img { animation: none; }
+@keyframes confirmPresenceHint {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-1px) scale(1.008); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .confirm-button.image-button img, #ticket-rsvp-btn img, .rsvp-image-button img, .countdown-location-image-button img { animation: none; }
+}
 .guests-balloons { z-index: -1; opacity: .7; }
 .guests-balloons-left { bottom: -76px; left: -90px; width: 160px; }
 .guests-balloons-right { top: auto; right: -94px; bottom: 72px; width: 135px; transform: rotate(9deg); }
@@ -998,6 +1051,7 @@ h2 {
 /* Acessibilidade: desliga animações se o usuário preferir menos movimento */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+  .hero-entry-image-button.is-loading img, .hero-entry-image-button.is-cta img { animation: none; }
 }
 
 /* ==========================================================================
@@ -1061,28 +1115,35 @@ h2 {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: min(100%, 285px);
+  margin-inline: auto;
 }
 
-.map-choice-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  min-height: 48px;
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 800;
-  color: #fff;
-  box-shadow: 0 5px 0 rgba(0,0,0,0.08);
+.map-choice-image {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+  transition: transform .2s ease;
 }
-
-.google-btn {
-  background: linear-gradient(135deg, #fa91b4, #ee5789);
+.map-choice-image img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
-
-.waze-btn {
-  background: linear-gradient(135deg, #74caee, #33a8db);
+.map-choice-image:hover,
+.map-choice-image:focus-visible {
+  transform: scale(1.02);
+}
+.map-choice-image:focus,
+.map-choice-image:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 .map-close-btn {
@@ -1093,6 +1154,23 @@ h2 {
   font-weight: 800;
   text-transform: uppercase;
 }
+
+/* Modal para escolher o tipo de convidado extra. */
+.guest-type-modal { position: fixed; inset: 0; z-index: 110; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.guest-type-modal.is-hidden { display: none !important; }
+.guest-type-modal-backdrop { position: absolute; inset: 0; background: rgba(70, 50, 60, .45); backdrop-filter: blur(4px); }
+.guest-type-modal-card { position: relative; z-index: 2; width: min(100%, 320px); padding: 24px 20px 18px; border: 2px solid #ffd6e5; border-radius: 22px; background: #fff8f2; box-shadow: 0 14px 35px rgba(125, 77, 101, .2); text-align: center; }
+.guest-type-modal-card h3 { margin: 0 0 6px; color: var(--rose-strong); font-family: "DM Serif Display", Georgia, serif; font-size: 24px; }
+.guest-type-modal-card p { margin: 0 0 18px; color: #74636b; font-size: 13px; font-weight: 700; }
+.guest-type-options { display: grid; gap: 9px; }
+.guest-type-image-button { display: block; width: 100%; padding: 0; border: 0; background: transparent; box-shadow: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.guest-type-image-button img { display: block; width: 100%; height: auto; }
+.guest-type-image-button:focus, .guest-type-image-button:focus-visible { outline: none; box-shadow: none; }
+.guest-type-image-button:hover { transform: scale(1.015); }
+.guest-type-modal-card button:focus-visible { outline: 3px solid #6baec8; outline-offset: 3px; }
+.guest-type-modal-card #guest-type-cancel { margin-top: 14px; padding: 3px 10px; color: #b08d9b; background: transparent; font-size: 12px; font-weight: 800; text-transform: uppercase; }
+.guest-delete { min-width: 22px; padding: 0; color: #b56a80; background: transparent; font-size: 14px; line-height: 1; -webkit-tap-highlight-color: transparent; }
+.guest-delete:focus-visible { outline: none; }
 
 /* ============================================================================
    16. NAVEGAÇÃO POR TELAS (STORIES / APP)

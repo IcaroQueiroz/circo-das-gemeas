@@ -15,6 +15,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const panels = [...document.querySelectorAll('.section-panel')];
   const heroEntryButton = document.querySelector('.hero-footer .primary-button');
+  const heroEntryImage = heroEntryButton.querySelector('#hero-entry-image');
+  [
+    'assets/images/ui/entrar-no-circo.png',
+    'assets/images/ui/espetaculo-comeca.png',
+    'assets/images/ui/convite-n-localizado.png'
+  ].forEach((src) => {
+    const image = new Image();
+    image.src = src;
+  });
   const countdownNextButton = document.querySelector('#contagem .section-next');
   const familyGreeting = document.querySelector('#family-greeting');
   const rsvpActions = document.querySelector('#rsvp-actions');
@@ -83,6 +92,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
   const disableRsvpActions = () => rsvpActions.querySelectorAll('button').forEach((button) => { button.disabled = true; });
   const enableRsvpActions = () => rsvpActions.querySelectorAll('button').forEach((button) => { button.disabled = false; });
+  const setHeroEntryImage = (src, label) => {
+    if (!heroEntryButton.contains(heroEntryImage)) heroEntryButton.replaceChildren(heroEntryImage);
+    heroEntryImage.src = src;
+    heroEntryImage.alt = label;
+    heroEntryButton.setAttribute('aria-label', label);
+  };
+  const setHeroLoadingState = () => {
+    setHeroEntryImage('assets/images/ui/carregando.png', 'Carregando convite');
+    heroEntryButton.href = '#';
+    heroEntryButton.setAttribute('aria-disabled', 'true');
+    heroEntryButton.classList.add('is-loading');
+    heroEntryButton.classList.remove('is-cta', 'is-disabled');
+  };
   const showUnavailable = (message, canRetry = false) => {
     accessState = canRetry ? 'error' : 'invalid';
     if (!canRetry) dataState = 'error';
@@ -90,8 +112,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     familyGreeting.textContent = message;
     rsvpStatus.textContent = message;
     disableRsvpActions();
-    heroEntryButton.textContent = canRetry ? 'Tentar novamente' : 'Convite indisponível';
     heroEntryButton.href = '#';
+    heroEntryButton.classList.remove('is-loading', 'is-cta');
+    heroEntryButton.classList.toggle('is-disabled', !canRetry);
+    setHeroEntryImage(
+      canRetry ? 'assets/images/ui/carregando.png' : 'assets/images/ui/convite-n-localizado.png',
+      canRetry ? 'Tentar novamente' : 'Convite não localizado'
+    );
     heroEntryButton.setAttribute('aria-disabled', String(!canRetry));
     showToast(message);
   };
@@ -149,8 +176,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else { audio.pause(); setSoundState(false); }
   });
   heroEntryButton.addEventListener('click', async (event) => {
-    if (audio.src) {
-      try { await audio.play(); setSoundState(true); } catch { /* áudio opcional */ }
+    if (heroEntryButton.classList.contains('is-loading')) {
+      event.preventDefault();
+      return;
     }
     if (retryAccess || retryInvitationData) {
       event.preventDefault();
@@ -160,20 +188,27 @@ document.addEventListener('DOMContentLoaded', async () => {
       retry?.();
       return;
     }
+    if (audio.src) {
+      try { await audio.play(); setSoundState(true); } catch { /* áudio opcional */ }
+    }
   });
 
   const setResponseNavigation = (responded, status) => {
     const isAnswered = responded && (status === 'confirmed' || status === 'declined');
+    heroEntryButton.classList.remove('is-loading', 'is-disabled');
+    heroEntryButton.classList.add('is-cta');
     if (isAnswered) {
       heroEntryButton.href = '#contagem';
-      heroEntryButton.innerHTML = 'O Espetáculo Começa em... <span aria-hidden="true">↗</span>';
+      heroEntryButton.removeAttribute('aria-disabled');
+      setHeroEntryImage('assets/images/ui/espetaculo-comeca.png', 'O espetáculo começa em');
       countdownNextButton.href = '#local';
       countdownNextButton.setAttribute('aria-label', 'Ver localização do evento');
       return;
     }
 
     heroEntryButton.href = '#apresentacao';
-    heroEntryButton.innerHTML = 'Entrar no circo <span aria-hidden="true">↗</span>';
+    heroEntryButton.removeAttribute('aria-disabled');
+    setHeroEntryImage('assets/images/ui/entrar-no-circo.png', 'Entrar no circo');
     countdownNextButton.href = '#rsvp';
     countdownNextButton.setAttribute('aria-label', 'Rolar para a confirmação');
   };
@@ -185,9 +220,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     familyGreeting.textContent = 'Não foi possível carregar as informações do convite.';
     rsvpStatus.textContent = 'Não foi possível carregar as informações do convite.';
     disableRsvpActions();
-    heroEntryButton.textContent = 'Tentar novamente';
     heroEntryButton.href = '#';
+    setHeroEntryImage('assets/images/ui/entrar-no-circo.png', 'Tentar novamente');
     heroEntryButton.removeAttribute('aria-disabled');
+    heroEntryButton.classList.remove('is-loading', 'is-disabled');
+    heroEntryButton.classList.add('is-cta');
     showToast('Não foi possível carregar as informações do convite.');
   };
 
@@ -273,6 +310,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const startStatusRequest = () => {
     if (!code) return;
+    setHeroLoadingState();
     accessState = 'checking';
     retryAccess = null;
 
@@ -299,6 +337,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   clearPrivateData();
   familyGreeting.textContent = code ? 'Carregando seu convite...' : 'Este convite precisa de um link válido.';
   disableRsvpActions();
+  setHeroLoadingState();
   goToSection('#abertura');
 
   if (!code) {
