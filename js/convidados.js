@@ -18,5 +18,17 @@ async function fetchInvitation(code) {
   return response.json();
 }
 
+async function fetchInviteStatus(code) {
+  const url = new URL(INVITE_API_URL);
+  url.searchParams.set('action', 'status');
+  url.searchParams.set('code', code);
+
+  const response = await fetch(url, { headers: { Accept: 'application/json' } });
+  if (!response.ok) throw new Error(`HTTP_${response.status}`);
+
+  return response.json();
+}
+
 window.getInviteFromUrl = getInviteFromUrl;
 window.fetchInvitation = fetchInvitation;
+window.fetchInviteStatus = fetchInviteStatus;
