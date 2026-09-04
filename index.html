@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#ffd6e5" />
+    <meta name="description" content="Convite digital do primeiro aninho de Liz e Luna." />
+    <title>Circo das Gêmeas · Liz & Luna</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Nunito:wght@400;600;700;800&family=Parisienne&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <div class="top-progress" aria-hidden="true"><span id="progress-bar"></span></div>
+
+      <header class="site-header" id="top">
+        <a class="brand-mark" href="#top" aria-label="Voltar ao início">
+          <span aria-hidden="true">✦</span>
+          <span>Liz <i>&</i> Luna</span>
+        </a>
+        <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="false" aria-label="Ativar ou desativar música">
+          <span class="sound-icon" aria-hidden="true">♫</span>
+          <span id="sound-label">som off</span>
+        </button>
+      </header>
+
+      <main>
+        <section class="hero section-panel" id="abertura" aria-labelledby="hero-title">
+          <img class="scene-asset hero-curtain" src="assets/images/decorations/cortina-superior-03.png" alt="" aria-hidden="true" fetchpriority="high" />
+          <img class="scene-asset hero-balloons hero-balloons-left" src="assets/images/decorations/buque-baloes-03.png" alt="" aria-hidden="true" />
+          <img class="scene-asset hero-balloons hero-balloons-right" src="assets/images/decorations/trio-baloes-com-estrelas.png" alt="" aria-hidden="true" />
+          <img class="scene-asset hero-cloud hero-cloud-left" src="assets/images/decorations/nuvens-candy-canto-01.png" alt="" aria-hidden="true" />
+          <div class="section-inner hero-content reveal">
+            <h1 class="sr-only" id="hero-title">Circo das Gêmeas, Liz e Luna, 1 aninho</h1>
+            <img class="hero-logo" src="assets/images/circus/logo-circo-das-gemeas-1-aninho.png" alt="Circo das Gêmeas, Liz e Luna, 1 aninho" fetchpriority="high" />
+          </div>
+          <div class="hero-stage reveal">
+            <img class="hero-twins" src="assets/images/characters/personagens-sentadas-pedestal.png" alt="Liz e Luna sentadas em um pedestal de circo" />
+          </div>
+          <div class="hero-footer reveal">
+            <a class="primary-button" href="#apresentacao">Entrar no circo <span aria-hidden="true">↗</span></a>
+          </div>
+        </section>
+
+        <section class="story section-panel" id="apresentacao" aria-labelledby="story-title">
+          <img class="scene-asset top-bunting" src="assets/images/decorations/bandeirolas-03.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="scene-asset story-clouds" src="assets/images/decorations/nuvens-candy-01.png" alt="" aria-hidden="true" loading="lazy" />
+          <div class="section-inner section-content reveal">
+            <h2 id="story-title">Respeitável<br />público!</h2>
+            <p class="lead-copy">O nosso maior espetáculo<br />está prestes a começar!</p>
+            <div class="ornament-line" aria-hidden="true"><span>♥</span></div>
+            <p class="body-copy names-block"><strong>Liz &amp; Luna</strong><span>estão completando<br />seu primeiro aninho e você é</span><em>nosso convidado especial!</em></p>
+          </div>
+          <img class="story-twins reveal" src="assets/images/characters/personagens-em-pe-maos-dadas.png" alt="Liz e Luna em pé, de mãos dadas" loading="lazy" />
+          <a class="asset-next-button section-next soft" href="#informacoes" aria-label="Rolar para as informações">
+            <img src="assets/images/ui/botao-continuar.png" alt="" aria-hidden="true" loading="lazy" />
+          </a>
+        </section>
+
+        <section class="ticket section-panel" id="informacoes" aria-labelledby="ticket-title">
+          <img class="scene-asset top-bunting" src="assets/images/decorations/bandeirolas-02.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="scene-asset ticket-balloon" src="assets/images/circus/balao-ar-quente-02.png" alt="" aria-hidden="true" loading="lazy" />
+          <h2 class="sr-only" id="ticket-title">Informações do evento</h2>
+          <div class="ticket-composition reveal">
+            <img class="ticket-frame" src="assets/images/ui/ingresso-vip-card.png" alt="" aria-hidden="true" loading="lazy" />
+            <div class="ticket-content">
+              <div class="event-detail"><span class="detail-icon" aria-hidden="true">▦</span><div><small>data</small><strong id="event-date">—</strong></div></div>
+              <div class="event-detail"><span class="detail-icon" aria-hidden="true">◷</span><div><small>horário</small><strong id="event-time">—</strong></div></div>
+              <div class="event-detail"><span class="detail-icon" aria-hidden="true">⌖</span><div><small>local</small><strong id="event-venue">—</strong><span id="event-address">—</span></div></div>
+              <a class="ticket-button-img" id="ticket-rsvp-btn" href="#rsvp" aria-label="Garanta seu ingresso. Clique aqui."><img   src="assets/images/ui/garanta-seu-ingresso-clique-aqui.png" alt="Garanta seu ingresso - Clique aqui"loading="lazy" /></a>
+            </div>
+          </div>
+          <img class="ticket-carousel reveal" src="assets/images/circus/carrossel-02.png" alt="Carrossel em tons candy" loading="lazy" />
+          <a class="asset-next-button section-next soft" href="#local" aria-label="Rolar para a localização">
+            <img src="assets/images/ui/botao-continuar.png" alt="" aria-hidden="true" loading="lazy" />
+          </a>
+        </section>
+
+        <section class="destination section-panel" id="local" aria-labelledby="destination-title">
+          <img class="destination-bunting destination-bunting-left" src="assets/images/decorations/bandeirolas-02.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="destination-bunting destination-bunting-right" src="assets/images/decorations/bandeirolas-02.png" alt="" aria-hidden="true" loading="lazy" />
+          <div class="section-inner destination-content reveal">
+            <h2 class="section-title" id="destination-title">Siga o caminho<br />até o nosso circo!</h2>
+            <p class="lead-copy">Nosso grande espetáculo<br />já tem endereço.</p>
+            <div class="destination-card-wrapper">
+              <img class="destination-frame" src="assets/images/ui/destino.png" alt="Moldura decorativa do destino do espetáculo" loading="lazy" />
+              <div class="destination-card-body">
+                <strong id="dest-venue">—</strong>
+                <span id="dest-address">—</span>
+              </div>
+            </div>
+            <a class="destination-btn-img" id="dest-maps-btn" href="#map-modal" aria-label="Como chegar ao nosso circo">
+              <img src="assets/images/ui/como-chegar.png" alt="Como chegar" loading="lazy" />
+            </a>
+          </div>
+          <div class="destination-stage" aria-hidden="true">
+            <img class="destination-sign" src="assets/images/ui/nosso-circo-te-espera.png" alt="" loading="lazy" />
+            <img class="destination-tent" src="assets/images/circus/tenda-circo-02.png" alt="" loading="lazy" />
+            <img class="destination-clouds" src="assets/images/decorations/nuvens-candy-02.png" alt="" loading="lazy" />
+          </div>
+          <a class="asset-next-button section-next soft" href="#contagem" aria-label="Rolar para a contagem regressiva">
+            <img src="assets/images/ui/botao-continuar.png" alt="" aria-hidden="true" loading="lazy" />
+          </a>
+        </section>
+
+        <section class="countdown section-panel" id="contagem" aria-labelledby="countdown-title">
+          <img class="scene-asset top-bunting" src="assets/images/decorations/bandeirolas-01.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="scene-asset countdown-clouds" src="assets/images/decorations/nuvens-candy-02.png" alt="" aria-hidden="true" loading="lazy" />
+          <div class="section-inner section-content reveal">
+            <h2 id="countdown-title">O espetáculo<br />começa em...</h2>
+            <div class="count-grid" aria-live="polite">
+              <div class="count-card"><strong id="days">00</strong><span>dias</span></div>
+              <div class="count-card"><strong id="hours">00</strong><span>horas</span></div>
+              <div class="count-card"><strong id="minutes">00</strong><span>minutos</span></div>
+              <div class="count-card"><strong id="seconds">00</strong><span>segundos</span></div>
+            </div>
+            <p class="countdown-fallback" id="countdown-message"></p>
+          </div>
+          <img class="countdown-twins reveal" src="assets/images/characters/personagens-deitadas-pedestal.png" alt="Liz e Luna deitadas sobre um pedestal de circo" loading="lazy" />
+          <a class="primary-button" href="#local" id="countdown-location-btn">Ver Local e Endereço <span aria-hidden="true">↗</span></a>
+          <a class="asset-next-button section-next soft" href="#rsvp" aria-label="Rolar para a confirmação">
+            <img src="assets/images/ui/botao-continuar.png" alt="" aria-hidden="true" loading="lazy" />
+          </a>
+        </section>
+
+        <section class="rsvp section-panel" id="rsvp" aria-labelledby="rsvp-title">
+          <img class="scene-asset top-bunting" src="assets/images/decorations/bandeirolas-02.png" alt="" aria-hidden="true" loading="lazy" />
+          <div class="section-inner section-content rsvp-content reveal">
+            <h2 id="rsvp-title">Reserve seu lugar<br />no espetáculo</h2>
+            <p class="rsvp-greeting" id="family-greeting">Família convidada,<br />vocês estarão conosco?</p>
+            <div class="rsvp-actions" id="rsvp-actions">
+              <button class="primary-button action-button" type="button" data-rsvp="yes"><span class="action-icon" aria-hidden="true">♥</span><span class="action-copy"><b>Sim!</b><small>estaremos lá</small></span></button>
+              <button class="secondary-button action-button" type="button" data-rsvp="no"><span class="action-icon" aria-hidden="true">★</span><span class="action-copy"><b>Infelizmente</b><small>não poderemos</small></span></button>
+            </div>
+            <p class="inline-status" id="rsvp-status" role="status"></p>
+          </div>
+          <img class="rsvp-tent" src="assets/images/circus/tenda-circo-02.png" alt="" aria-hidden="true" loading="lazy" />
+          <a class="asset-next-button section-next soft" href="#convidados" aria-label="Rolar para a seleção de convidados">
+            <img src="assets/images/ui/botao-continuar.png" alt="" aria-hidden="true" loading="lazy" />
+          </a>
+        </section>
+
+        <section class="guests section-panel is-hidden" id="convidados" aria-labelledby="guests-title" aria-hidden="true">
+          <img class="scene-asset top-bunting" src="assets/images/decorations/bandeirolas-03.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="scene-asset guests-balloons guests-balloons-left" src="assets/images/decorations/buque-baloes-04.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="scene-asset guests-balloons guests-balloons-right" src="assets/images/decorations/trio-baloes.png" alt="" aria-hidden="true" loading="lazy" />
+          <div class="section-inner section-content guests-content reveal">
+            <h2 id="guests-title">Quem irá ao<br />espetáculo?</h2>
+            <p class="section-intro">Selecione quem estará presente:</p>
+            <form id="guest-form" class="guest-form">
+              <div id="guest-list"></div>
+              <button class="add-guest" id="add-guest" type="button">＋ Adicionar outro convidado</button>
+              <button class="primary-button confirm-button" type="submit">Confirmar presença <span aria-hidden="true">↗</span></button>
+            </form>
+            <p class="inline-status" id="guest-status" role="status"></p>
+          </div>
+          <a class="asset-next-button section-next soft" href="#confirmacao" aria-label="Rolar para a confirmação enviada">
+            <img src="assets/images/ui/botao-continuar.png" alt="" aria-hidden="true" loading="lazy" />
+          </a>
+        </section>
+
+        <section class="success section-panel is-hidden" id="confirmacao" aria-labelledby="success-title" aria-hidden="true">
+          <img class="scene-asset top-bunting" src="assets/images/decorations/bandeirolas-01.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="scene-asset success-confetti" src="assets/images/decorations/confetes.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="scene-asset success-balloons" src="assets/images/decorations/buque-baloes-02.png" alt="" aria-hidden="true" loading="lazy" />
+          <div class="section-inner section-content reveal">
+            <h2 id="success-title">Obrigado!</h2>
+            <p class="lead-copy">Sua presença foi confirmada<br />com sucesso!</p>
+            <div class="ornament-line" aria-hidden="true"><span>♥</span></div>
+            <p class="body-copy"><strong>Liz e Luna</strong> estão muito felizes<br />em ter vocês no nosso dia especial!</p>
+            <a class="primary-button" href="#local" id="thanks-maps-btn">Como chegar ao circo <span aria-hidden="true">↗</span></a>
+          </div>
+          <img class="success-twins reveal" src="assets/images/characters/personagens-abracadas.png" alt="Liz e Luna abraçadas e felizes" loading="lazy" />
+        </section>
+        <!-- Modal Seletor de Mapas -->
+        <div class="map-modal is-hidden" id="map-modal" role="dialog" aria-modal="true" aria-label="Escolha seu aplicativo de mapas">
+          <div class="map-modal-backdrop" id="map-modal-backdrop"></div>
+          <div class="map-modal-card">
+            <h3>Como deseja ir?</h3>
+            <p>Escolha seu aplicativo preferido:</p>
+            <div class="map-options">
+              <a class="map-choice-btn google-btn" id="link-gmaps" href="#" target="_blank" rel="noreferrer">
+                <span>📍</span> Google Maps
+              </a>
+              <a class="map-choice-btn waze-btn" id="link-waze" href="#" target="_blank" rel="noreferrer">
+                <span>🚗</span> Waze
+              </a>
+            </div>
+            <button class="map-close-btn" id="map-close-btn" type="button">Cancelar</button>
+          </div>
+        </div>    
+      </main>
+
+      <audio id="ambient-audio" loop preload="none" data-src="assets/audio/ambient.mp3"></audio>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </div>
+    <script src="js/convidados.js"></script>
+    <script src="js/countdown.js"></script>
+    <script src="js/rsvp.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

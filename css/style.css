@@ -1,0 +1,1046 @@
+/* ==========================================================================
+   1. VARIÁVEIS GLOBAIS (:ROOT)
+   Cores, sombras, espaçamentos e medidas reutilizáveis em todo o site.
+   ========================================================================== */
+:root {
+  --viewport-h: 100svh;
+  /* Paleta de Cores */
+  --ink: #50464b;             /* Cor principal do texto (tom grafite quente) */
+  --rose: #f98fb4;            /* Rosa claro base */
+  --rose-strong: #ef4d87;     /* Rosa vibrante para títulos e destaques */
+  --rose-deep: #d93c73;       /* Rosa mais escuro para bordas e ênfase */
+  --pink-pale: #ffd6e5;       /* Rosa bem clarinho de fundo */
+  --cream: #fff8f2;           /* Fundo off-white/creme */
+  --blue: #bfe4f3;            /* Azul candy pastel */
+  --blue-strong: #79bdd8;     /* Azul de destaque */
+  --gold: #e6c475;            /* Dourado para ícones e detalhes */
+  --mist: #eaf6ff;            /* Azul suave névoa */
+
+  /* Efeitos e Sombras */
+  --shadow: 0 12px 28px rgba(201, 85, 127, .16); /* Sombra rosada suave */
+
+  /* Espaçamentos e Medidas de Tela */
+  --header-height: calc(60px + env(safe-area-inset-top)); /* Altura do topo considerando o entalhe/notch do celular */
+  --gap-xs: clamp(4px, .8svh, 8px);
+  --gap-sm: clamp(8px, 1.4svh, 12px);
+  --gap-md: clamp(12px, 2.2svh, 20px);
+  --gap-lg: clamp(18px, 3.2svh, 28px);
+  --space-xs: var(--gap-xs);  /* Alias para componentes compartilhados */
+  --space-sm: var(--gap-sm);
+  --space-md: var(--gap-md);
+  --space-lg: var(--gap-lg);
+  --space-xl: 40px;           /* Espaço extra grande */
+  --content-gutter: clamp(14px, 4.5vw, 20px); /* Margem lateral do conteúdo da tela */
+  --panel-top: calc(var(--header-height) + var(--gap-xs));
+  --panel-bottom: calc(var(--gap-sm) + env(safe-area-inset-bottom));
+  --section-top: var(--panel-top); /* Alias legado */
+  --section-bottom: var(--panel-bottom);
+}
+
+/* ==========================================================================
+   2. RESET & CONFIGURAÇÕES BÁSICAS
+   Garante consistência entre diferentes navegadores e dispositivos.
+   ========================================================================== */
+* { 
+  box-sizing: border-box; /* Inclui padding e bordas no cálculo total de largura/altura */
+}
+
+html { 
+  scroll-behavior: smooth; /* Rolagem suave ao navegar entre as âncoras */
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: #f5ecff;     /* Cor de fundo fora do container em telas grandes */
+}
+
+body { 
+  height: 100%;
+  min-height: 100vh;
+  min-height: var(--viewport-h);
+  min-width: 320px; 
+  overflow: hidden;
+  overscroll-behavior: none;
+  margin: 0; 
+  color: var(--ink); 
+  background: radial-gradient(circle at 50% 0, #fff 0, #f7e9ff 48%, #eeddf7 100%); 
+  font-family: Nunito, Arial, sans-serif; 
+}
+
+/* Herança padrão para botões e links */
+button, a { font: inherit; }
+a { color: inherit; text-decoration: none; }
+button { border: 0; cursor: pointer; }
+img { display: block; max-width: 100%; }
+
+/* ==========================================================================
+   3. ESTRUTURA PRINCIPAL (SHELL E HEADER)
+   Simula a tela de um smartphone vertical centralizado.
+   ========================================================================== */
+.site-shell {
+  position: relative;
+  width: min(100%, 460px); /* No mobile usa 100%; no computador limita a 460px */
+  height: 100vh;
+  height: var(--viewport-h);
+  min-height: 0;
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--cream);
+  box-shadow: 0 0 56px rgba(137, 89, 128, .2); /* Sombra que destaca o layout no desktop */
+}
+
+main { 
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Barra fininha de progresso no topo da página */
+.top-progress { 
+  position: fixed; 
+  z-index: 50; 
+  top: 0; 
+  left: 50%; 
+  width: min(100%, 460px); 
+  height: 3px; 
+  overflow: hidden; 
+  background: rgba(255, 255, 255, .58); 
+  transform: translateX(-50%); 
+}
+.top-progress span { 
+  display: block; 
+  width: 0; 
+  height: 100%; 
+  background: var(--rose-deep); 
+  transition: width .15s ease; 
+}
+
+/* Cabeçalho fixo com nome e botão de áudio */
+.site-header {
+  position: fixed;
+  z-index: 40;
+  top: calc(8px + env(safe-area-inset-top));
+  left: 50%;
+  display: flex;
+  width: min(100%, 460px);
+  align-items: center;
+  justify-content: space-between;
+  min-height: 40px;
+  padding: 0 14px;
+  color: var(--rose-deep);
+  transform: translateX(-50%);
+}
+
+/* Selo com o nome "Liz & Luna" */
+.brand-mark {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  padding: 5px 9px;
+  border: 1px solid rgba(244, 143, 180, .38);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .74);
+  box-shadow: 0 3px 12px rgba(220, 90, 136, .12);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+.brand-mark > span:first-child { color: var(--gold); font-size: 14px; line-height: 1; }
+.brand-mark i { font-family: "DM Serif Display", Georgia, serif; font-size: 13px; font-weight: 400; }
+
+/* Botão de ligar/desligar música */
+.sound-toggle {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  min-height: 31px;
+  padding: 5px 9px;
+  border: 1px solid rgba(244, 143, 180, .42);
+  border-radius: 999px;
+  color: var(--rose-deep);
+  background: rgba(255, 255, 255, .8);
+  box-shadow: 0 3px 12px rgba(220, 90, 136, .12);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.sound-toggle.is-on { border-color: rgba(102, 183, 216, .65); color: #4387a4; background: #f1fbff; }
+.sound-icon { font-size: 15px; line-height: 1; }
+
+/* ==========================================================================
+   4. PAINÉIS DE SEÇÃO (BASE COMUM PARA TODAS AS TELAS)
+   ========================================================================== */
+.section-panel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  min-height: 0;
+  padding: var(--panel-top) var(--content-gutter) var(--panel-bottom);
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity .3s ease;
+}
+
+.section-panel.is-active {
+  display: flex;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+/* Fundo com poás/estrelinhas sutis repetidos */
+.section-panel::before {
+  position: absolute;
+  z-index: -4;
+  inset: 0;
+  content: "";
+  background:
+    radial-gradient(circle at 8% 21%, rgba(255, 255, 255, .84) 0 2px, transparent 2.5px),
+    radial-gradient(circle at 91% 34%, rgba(255, 255, 255, .76) 0 1.5px, transparent 2px),
+    linear-gradient(180deg, #fff8f2 0%, #ffe5ee 72%, #ffdbe8 100%);
+  background-size: 138px 154px, 176px 150px, auto;
+}
+
+/* Elementos visuais/ilustrações de fundo */
+.scene-asset { position: absolute; z-index: -1; pointer-events: none; user-select: none; }
+.section-inner { width: min(100%, 380px); margin-inline: auto; }
+.section-content { position: relative; z-index: 2; width: min(100%, 380px); flex: 0 0 auto; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+/* ==========================================================================
+   5. TIPOGRAFIA & BOTÕES GERAIS
+   ========================================================================== */
+h1, h2, p { margin-top: 0; }
+h2 {
+  max-width: 350px;
+  margin: 0 auto var(--space-md);
+  color: var(--rose-strong);
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: clamp(32px, 8.8vw, 43px);
+  font-weight: 400;
+  line-height: .94;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+}
+.lead-copy { margin-bottom: var(--space-md); color: #5b5156; font-size: 16px; font-weight: 700; line-height: 1.54; }
+.body-copy { margin-bottom: 0; color: #4e464a; font-size: 14px; font-weight: 600; line-height: 1.58; }
+.body-copy strong { color: var(--rose-strong); font-family: "Parisienne", cursive; font-size: 32px; font-weight: 400; }
+.body-copy em { color: var(--rose-deep); font-style: normal; }
+.names-block strong, .names-block > span, .names-block em { display: block; }
+.names-block strong { margin-bottom: var(--space-xs); }
+.names-block em { margin-top: 2px; }
+
+/* Linha com coração dourado decorativo */
+.ornament-line { display: flex; width: 154px; align-items: center; gap: 9px; margin: 0 auto 18px; color: var(--rose); }
+.ornament-line::before, .ornament-line::after { height: 1px; flex: 1; content: ""; background: #eeb0c4; }
+.ornament-line span { color: var(--gold); font-size: 16px; }
+
+/* Botões com relevo 3D estilo bala/doce */
+.primary-button, .secondary-button {
+  display: inline-flex;
+  min-height: 49px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 21px;
+  border-radius: 999px;
+  box-shadow: 0 7px 0 rgba(206, 78, 119, .18), 0 11px 22px rgba(213, 90, 133, .22), inset 0 1px rgba(255, 255, 255, .64);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  line-height: 1.08;
+  text-align: center;
+  text-transform: uppercase;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.primary-button { color: white; background: linear-gradient(135deg, #fa91b4, #ee5789); }
+.secondary-button { color: #fff; background: linear-gradient(135deg, #a9dbef, #75b9d8); box-shadow: 0 7px 0 rgba(63, 137, 173, .16), 0 11px 22px rgba(89, 168, 205, .2), inset 0 1px rgba(255, 255, 255, .65); }
+.primary-button:hover, .secondary-button:hover { box-shadow: 0 9px 0 rgba(206, 78, 119, .18), 0 15px 28px rgba(213, 90, 133, .27), inset 0 1px rgba(255, 255, 255, .64); transform: translateY(-2px); }
+.primary-button:focus-visible, .secondary-button:focus-visible, .asset-next-button:focus-visible, .sound-toggle:focus-visible, .add-guest:focus-visible { outline: 3px solid #6baec8; outline-offset: 3px; }
+
+/* Botão redondo de seta para descer tela */
+.asset-next-button { position: relative; z-index: 3; width: 45px; border-radius: 50%; filter: drop-shadow(0 5px 6px rgba(198, 98, 133, .18)); transition: transform .2s ease; }
+.asset-next-button:hover { transform: translateY(3px); }
+.asset-next-button.soft { width: 42px; }
+.section-next { align-self: center; flex: 0 0 auto; margin: var(--gap-xs) auto 0; }
+.map-trigger-btn { width: min(78%, 240px); margin: 10px auto 0; }
+
+/* ==========================================================================
+   6. SEÇÃO 1: HERO (ABERTURA)
+   ========================================================================== */
+
+.hero {
+  justify-content: flex-start; /* organiza tudo a partir do topo */
+}
+
+
+/* Fundo da página */
+.hero::before {
+  background: linear-gradient(
+    180deg,
+    #ffd5e5 0%,
+    #ffe0ed 57%,
+    #fff8f2 100%
+  );
+}
+
+
+/* Cortina superior */
+.hero-curtain {
+  z-index: 0; /* fica atrás do conteúdo principal */
+  top: 0; /* encosta no topo */
+  left: 50%; /* inicia no centro */
+  width: clamp(460px, 128vw, 540px); /* maior que a tela para sangrar nas laterais */
+  transform: translateX(-50%); /* centralização real */
+}
+
+
+/* Balões decorativos */
+.hero-balloons {
+  z-index: -1;
+  opacity: .84;
+}
+
+.hero-balloons-left {
+  top: 34%;
+  left: -18%;
+  width: clamp(82px, 29vw, 132px);
+  transform: rotate(-8deg);
+}
+
+.hero-balloons-right {
+  top: 42%;
+  right: -19%;
+  width: clamp(82px, 29vw, 132px);
+  transform: rotate(12deg);
+}
+
+
+/* Nuvens inferiores */
+.hero-cloud {
+  bottom: -14%;
+  left: -22%;
+  width: 78%;
+  opacity: .86;
+}
+
+
+/* ==========================================================================
+   ÁREA DO LOGO
+   ========================================================================== */
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: 100%;
+  max-width: 460px;
+  flex: 0 0 auto; /* não deixa essa área encolher para dar espaço ao antigo palco */
+  justify-content: center;
+  align-items: center;
+  min-height: 0;
+}
+
+
+/* Logo principal — aumentado aproximadamente 20% */
+.hero-logo {
+  display: block;
+
+  width: min(98%, 455px); /* antes 380px; agora o logo ganha muito mais presença */
+  max-width: 100%;
+
+  max-height: clamp(
+    250px,
+    39svh,
+    360px
+  ); /* antes ~33svh/300px; agora ocupa parte maior da altura */
+
+  height: auto;
+
+  margin-inline: auto;
+
+  object-fit: contain;
+
+  filter: drop-shadow(
+    0 9px 12px rgba(198, 77, 125, .16)
+  );
+}
+
+
+/* ==========================================================================
+   ÁREA DAS MENINAS
+   ========================================================================== */
+/*
+   O hero-stage continua existindo no HTML,
+   mas NÃO funciona mais como "palco" ocupando todo o espaço restante.
+
+   Agora ele é apenas um contêiner para centralizar as meninas.
+*/
+.hero-stage {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  width: 100%;
+
+  flex: 0 1 auto; /* NÃO ocupa mais todo o espaço vertical restante */
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 0;
+
+  margin-top: clamp(
+    0px,
+    1svh,
+    8px
+  ); /* pequena distância entre logo e meninas */
+}
+
+
+/* Personagens */
+.hero-twins {
+  width: auto;
+
+  max-width: min(80%, 320px); /* aumenta um pouco a largura máxima */
+
+  max-height: clamp(
+    225px,
+    35svh,
+    335px
+  ); /* aumenta também pela altura */
+
+  height: auto;
+
+  object-fit: contain;
+
+  filter: drop-shadow(
+    0 12px 13px rgba(191, 108, 143, .14)
+  );
+}
+
+/*    BOTÃO INFERIOR  */
+
+.hero-footer {
+  position: relative;
+  z-index: 4;
+
+  display: flex;
+  width: 100%;
+
+  flex: 0 0 auto; /* botão nunca deve ser sacrificado */
+
+  margin-top: auto; /* empurra o botão para o final disponível da tela */
+  margin-bottom: 15px; /* cria uma folga pequena no fundo e sobe o botão */
+
+  align-items: center;
+  flex-direction: column;
+
+  gap: var(--gap-sm);
+
+  padding: 0;
+
+
+}
+
+/* Botão Entrar no Circo */
+.hero-footer .primary-button {
+  width: min(84%, 280px);
+  min-height: 44px;
+  padding: 10px 18px;
+}
+
+/* Caso a seta volte a existir nessa página */
+.hero-footer .section-next {
+  margin: 0;
+}
+
+/* ==========================================================================
+   7. SEÇÃO 2: STORY (APRESENTAÇÃO / CONVITE)
+   ========================================================================== */
+.story::before { background: linear-gradient(180deg, #fffaf5 0%, #fff7f2 58%, #ffe5ed 100%); }
+.top-bunting { z-index: 1; top: 0; left: 50%; width: clamp(390px, 105vw, 470px); transform: translateX(-50%); }
+.story .section-content { padding-top: clamp(36px, 5.5svh, 54px); }
+.story h2 { max-width: 280px; margin-bottom: var(--space-xs); font-size: clamp(29px, 7.8vw, 35px); }
+.story .lead-copy { margin-bottom: var(--space-xs); font-size: 14px; line-height: 1.4; }
+.story .ornament-line { margin-bottom: var(--space-xs); }
+.story .body-copy { font-size: 13px; line-height: 1.42; }
+.story .body-copy strong { font-size: 28px; }
+.story-clouds { bottom: -95px; left: -14%; width: 128%; opacity: .84; }
+.story-twins { position: relative; z-index: 2; width: auto; max-width: min(74%, 300px); max-height: clamp(200px, 33svh, 310px); height: auto; flex: 1 1 auto; min-height: 0; margin: var(--gap-xs) auto; filter: drop-shadow(0 11px 11px rgba(192, 111, 141, .13)); }
+
+/* ==========================================================================
+   8. SEÇÃO 3: TICKET (INGRESSO VIP E CARROSSEL) - ATUALIZADO
+   ========================================================================== */
+
+.ticket { 
+  padding-top: calc(var(--panel-top) - 34px); /* sobe a composição geral */
+  padding-right: var(--content-gutter); 
+  padding-left: var(--content-gutter); 
+  justify-content: flex-start;
+}
+
+.ticket::before { 
+  background: linear-gradient(180deg, #eefaff 0%, #f8fdff 42%, #ffe7ef 100%); 
+}
+
+.ticket-balloon { 
+  display: none;
+}
+
+/* Card do ingresso — agora bem maior e com autorização para invadir a bandeirola */
+.ticket-composition { 
+  position: relative; 
+  z-index: 8; 
+  width: 100%;
+  max-width: min(104%, 470px); /* aumenta mais a largura útil */
+  height: min(
+    clamp(560px, 78svh, 760px),
+    calc(100svh - 78px)
+  ); /* ocupa muito mais altura */
+  max-height: 760px;
+  aspect-ratio: 1086 / 1448; 
+  flex: 0 0 auto;
+  margin: -18px auto 0; /* puxa o card para cima */
+}
+
+.ticket-frame { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: contain; 
+}
+
+/* Área interna do texto — mais estreita, para o texto caber melhor dentro do card */
+.ticket-content { 
+  position: absolute; 
+  top: 43%;
+  right: 20%;
+  bottom: 14%;
+  left: 20%;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  overflow: hidden;
+}
+
+/* Linha de cada informação */
+.event-detail { 
+  display: flex; 
+  align-items: flex-start; 
+  gap: 8px;
+  margin: 0 0 8px;
+}
+
+/* Faz a coluna de texto respeitar o espaço interno */
+.event-detail > div:last-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.detail-icon { 
+  display: grid; 
+  width: 30px; 
+  height: 30px; 
+  flex: 0 0 30px; 
+  place-items: center; 
+  border-radius: 8px; 
+  color: #f474a1; 
+  background: #fff1f4; 
+  font-size: 19px; 
+  font-weight: 800; 
+  line-height: 1; 
+}
+
+.event-detail small { 
+  display: block; 
+  margin-bottom: 2px; 
+  color: #d8527d; 
+  font-size: 12px; 
+  font-weight: 800; 
+  letter-spacing: .12em; 
+  text-transform: uppercase; 
+}
+
+.event-detail strong, 
+.event-detail span:last-child,
+.event-detail #event-date { 
+  display: block; 
+  color: #554b4f; 
+  font-weight: 800; 
+  line-height: 1.28;
+  overflow-wrap: anywhere;   /* impede vazamento horizontal */
+  word-break: break-word;    /* força quebra quando necessário */
+  white-space: normal;
+}
+
+.event-detail strong,
+.event-detail span:last-child { 
+  font-size: 14px; 
+}
+
+.event-detail #event-date { 
+  font-size: 12px; 
+  letter-spacing: -.02em; 
+}
+
+.event-detail span:last-child { 
+  font-size: 13px; 
+  font-weight: 700; 
+}
+
+/* Botão dentro do card */
+.ticket-button { 
+  position: relative;
+  z-index: 9;
+  width: 100%; 
+  min-height: 51px; 
+  margin-top: auto;
+  padding: 10px 14px; 
+  font-size: 13px; 
+  letter-spacing: .04em; 
+}
+
+.ticket-button span { 
+  font-size: 18px; 
+}
+
+/* Carrossel menor e mais comportado para não disputar com o card */
+.ticket-carousel { 
+  position: relative; 
+
+  z-index: 1; /* fica atrás do ticket, que está com z-index maior */
+
+  width: clamp(
+    210px,
+    62vw,
+    300px
+  ); /* aumenta bastante o carrossel */
+
+  max-height: clamp(
+    130px,
+    20svh,
+    190px
+  );
+
+  margin: -28px auto 0; /* sobe o carrossel e faz ele entrar atrás do ticket */
+
+  filter: drop-shadow(
+    0 8px 8px rgba(141, 170, 192, .16)
+  );
+
+  pointer-events: none;
+}
+
+.ticket .section-next { 
+  margin: 4px auto 0; 
+}
+
+/* ============================================================================
+   9. SEÇÃO 4: DESTINATION (LOCALIZAÇÃO / COMO CHEGAR)
+   ============================================================================ */
+.destination { 
+  overflow: hidden; 
+  padding-top: var(--panel-top);
+  background: linear-gradient(180deg, #fff8f4 0%, #ffedf4 55%, #e7f5fa 100%); 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Alinha do topo para baixo, evitando que a tela empurre tudo para o corte */
+}
+
+.destination::before { 
+  background: linear-gradient(180deg, #fff8f4 0%, #ffedf4 54%, #e5f4fa 100%); 
+}
+
+/* Container de textos superiores (Título e subtítulo) */
+.destination-content { 
+  position: relative; 
+  z-index: 4; 
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-top: clamp(44px, 6.5svh, 62px);
+}
+
+.destination .section-title { 
+  max-width: 340px; 
+  margin-bottom: 4px; /* Reduzido o espaço abaixo do título */
+  font-size: clamp(24px, 6.8vw, 32px); /* Fonte ligeiramente calibrada para celulares menores */
+  line-height: .94; 
+}
+
+.destination .lead-copy { 
+  margin-bottom: 6px; /* Folga compactada */
+  font-size: 13px; 
+  line-height: 1.35; 
+}
+
+/* Bandeirolas decorativas do topo */
+.destination-bunting { 
+  position: absolute; 
+  z-index: 2; 
+  top: -22px; /* Puxadas para cima para não sufocar o título */
+  width: 112%; 
+  max-width: none; 
+  pointer-events: none; 
+  transform-origin: 50% 0; 
+}
+
+.destination-bunting-left { 
+  left: -16%; /* Esconde a ponta com laço fora do painel */
+  transform: rotate(10deg); 
+}
+
+.destination-bunting-right { 
+  right: -16%; 
+  transform: scaleX(-1) rotate(10deg); 
+}
+
+/* Moldura do Card de Endereço (destino.png) */
+.destination-card-wrapper { 
+  position: relative; 
+  width: min(65vw, 280px);
+  margin: 0 auto; 
+}
+
+.destination-frame { 
+  display: block; 
+  width: 100%; 
+  height: auto; 
+  filter: drop-shadow(0 9px 14px rgba(210, 88, 133, .16)); 
+}
+
+/* Bloco de textos dentro do card */
+.destination-card-body { 
+  position: absolute; 
+  /* Alterado de 43% para 53%: posiciona o texto ABAIXO do ícone de PIN rosa */
+  top: 53%; 
+  right: 12%; 
+  left: 12%; 
+  display: flex; 
+  align-items: center; 
+  flex-direction: column; 
+  color: #3f3b47; 
+  text-align: center; 
+}
+
+.destination-card-body strong { 
+  display: block; 
+  margin-bottom: 4px; 
+  font-family: "DM Serif Display", Georgia, serif; 
+  font-size: clamp(17px, 4.4vw, 21px); /* Ajustado para caber perfeitamente na moldura */
+  font-weight: 400; 
+  line-height: 1.15; 
+  color: var(--ink);
+}
+
+.destination-card-body span { 
+  display: block; 
+  max-width: 230px; 
+  font-size: 11.5px; /* Tamanho proporcional para leitura limpa */
+  font-weight: 700; 
+  line-height: 1.38; 
+  white-space: normal; 
+  color: #665b61;
+}
+
+/* Botão rosa "COMO CHEGAR" */
+.destination-btn-img { 
+  position: relative; 
+  z-index: 6; 
+  display: block; 
+  width: min(72%, 240px);
+  margin: 6px auto 0;
+  filter: drop-shadow(0 7px 8px rgba(207, 73, 122, .16)); 
+  transition: transform .2s ease; 
+}
+
+.destination-btn-img:hover, 
+.destination-btn-img:focus-visible { 
+  transform: scale(1.03); 
+}
+
+.destination-btn-img:focus-visible { 
+  outline: 3px solid #6baec8; 
+  outline-offset: 4px; 
+  border-radius: 999px; 
+}
+
+/* Cenário Inferior (Placa, Tenda e Nuvens de Base) */
+.destination-stage { 
+  position: absolute;
+  z-index: 1; 
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: auto;
+  height: 32%;
+  pointer-events: none; 
+}
+
+/* Placa direcional "Nosso circo te espera" */
+.destination-sign { 
+  position: absolute; 
+  z-index: 3; 
+  bottom: clamp(0px, .8svh, 8px);
+  left: 0;
+  width: min(48vw, 185px);
+  filter: drop-shadow(0 7px 7px rgba(198, 103, 136, .17)); 
+}
+
+/* Tenda de circo ao fundo */
+.destination-tent { 
+  position: absolute; 
+  z-index: 1; 
+  right: -6%;
+  bottom: clamp(-10px, -1svh, 0px);
+  width: min(54vw, 225px);
+  max-width: none; 
+  opacity: .95; /* Maior nitidez */
+  filter: drop-shadow(0 7px 9px rgba(193, 105, 135, .14)); 
+}
+
+/* Nuvens brancas/candy cobrindo o pé do pedestal da placa e a base da tenda */
+.destination-clouds { 
+  position: absolute; 
+  z-index: 4; 
+  left: 50%;
+  bottom: -24px;
+  width: 135%;
+  max-width: none; 
+  transform: translateX(-50%);
+  opacity: .98; 
+}
+
+/* Seta redonda de navegação para a próxima tela */
+.destination .section-next { 
+  position: relative; 
+  z-index: 7; 
+  margin: var(--gap-xs) auto 0;
+}
+
+/* ==========================================================================
+   9. SEÇÃO 4: COUNTDOWN (CONTAGEM REGRESSIVA)
+   ========================================================================== */
+.countdown::before { background: linear-gradient(180deg, #fff8f2 0%, #ffe9f1 63%, #dbf1fc 100%); }
+.countdown .section-content { padding-top: clamp(36px, 5.5svh, 54px); }
+.countdown h2 { max-width: 280px; margin-bottom: var(--space-xs); font-size: clamp(29px, 7.7vw, 35px); }
+
+/* Grid dos números da contagem (Dias, Horas, Minutos, Segundos) */
+.count-grid { display: grid; width: min(100%, 292px); grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 0 auto; }
+.count-card { padding: 8px 7px 7px; border: 1px solid rgba(238, 124, 164, .42); border-radius: 14px; background: rgba(255, 248, 242, .86); box-shadow: 0 4px 0 rgba(235, 145, 174, .22); }
+.count-card strong { display: block; color: var(--rose-strong); font-family: "DM Serif Display", Georgia, serif; font-size: 36px; font-weight: 400; line-height: .9; }
+.count-card span { color: #74636b; font-size: 9px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.countdown-fallback { min-height: 1em; margin: 8px 0 0; color: #8a6f7a; font-size: 10px; }
+.countdown-clouds { bottom: -124px; left: -15%; width: 130%; opacity: .82; }
+.countdown-twins { position: relative; z-index: 2; width: auto; max-width: min(74%, 300px); max-height: clamp(190px, 30svh, 295px); height: auto; flex: 1 1 auto; min-height: 0; margin: var(--gap-xs) auto; filter: drop-shadow(0 10px 12px rgba(105, 170, 202, .16)); }
+.countdown .map-trigger-btn { position: relative; z-index: 4; flex: 0 0 auto; margin-top: 0; }
+
+/* ==========================================================================
+   10. SEÇÃO 5: RSVP (CONFIRMAÇÃO DE PRESENÇA)
+   ========================================================================== */
+.rsvp::before { background: linear-gradient(180deg, #fff9f2 0%, #ffedf1 60%, #f7dfe9 100%); }
+.rsvp .section-content { padding-top: clamp(36px, 5.5svh, 54px); }
+.rsvp h2 { max-width: 290px; margin-bottom: var(--gap-xs); font-size: clamp(29px, 7.8vw, 36px); line-height: .92; }
+.rsvp-greeting { margin: var(--space-sm) 0; color: #5e5358; font-family: "DM Serif Display", Georgia, serif; font-size: 17px; line-height: 1.28; }
+.rsvp-greeting::first-line { color: var(--rose-strong); }
+
+/* Botões Sim / Não */
+.rsvp-actions { display: grid; width: min(100%, 292px); gap: var(--space-xs); margin: 0 auto; }
+.action-button { position: relative; min-height: 57px; flex-direction: row; gap: var(--space-sm); padding: 8px 18px; font-size: 15px; }
+.action-icon { display: grid; width: 19px; flex: 0 0 19px; place-items: center; color: #fff5bd; font-size: 16px; }
+.action-copy { display: grid; min-width: 0; justify-items: center; gap: 1px; }
+.action-copy b { font-size: 15px; }
+.action-button small { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: none; }
+.rsvp-tent { position: relative; z-index: 2; width: auto; max-width: min(80%, 280px); max-height: clamp(145px, 24svh, 240px); height: auto; flex: 1 1 auto; min-height: 0; margin: var(--gap-xs) auto; opacity: 1; }
+.inline-status { position: relative; z-index: 4; min-height: 1em; margin: 8px 0 0; color: var(--rose-deep); font-size: 11px; font-weight: 700; }
+.rsvp .section-next { margin-top: var(--gap-xs); }
+
+/* ==========================================================================
+   11. SEÇÃO 6: GUESTS (SELEÇÃO DE CONVIDADOS)
+   ========================================================================== */
+.guests::before { background: linear-gradient(180deg, #fff8f2 0%, #ffecf0 66%, #ffe0ea 100%); }
+.guests .section-content { display: flex; width: min(100%, 380px); flex: 1 1 auto; flex-direction: column; min-height: 0; padding-top: clamp(36px, 5.5svh, 54px); }
+.guests h2 { margin-bottom: var(--space-xs); font-size: clamp(29px, 7.7vw, 35px); }
+.section-intro { margin: 0 0 10px; color: #685b61; font-size: 12px; font-weight: 700; }
+.guest-form { display: flex; width: min(100%, 326px); flex: 1 1 auto; flex-direction: column; min-height: 0; margin: 0 auto; }
+#guest-list { display: grid; flex: 1 1 auto; min-height: 0; gap: 6px; overflow-y: auto; padding: 0 3px 4px; overscroll-behavior: contain; }
+
+/* Item/Linha com checkbox de convidado */
+.guest-row { display: flex; min-height: 36px; align-items: center; gap: 8px; padding: 4px 10px; border: 1px solid rgba(232, 165, 186, .66); border-radius: 10px; background: rgba(255, 250, 244, .94); box-shadow: 0 4px 0 rgba(242, 201, 211, .58); text-align: left; }
+.guest-row input { width: 18px; height: 18px; margin: 0; appearance: none; border: 2px solid #ed9ab5; border-radius: 6px; background: #fff; transition: .2s ease; }
+.guest-row input:checked { border-color: #ef6a95; background: #f985aa; box-shadow: inset 0 0 0 4px #fff; }
+.guest-row label { flex: 1; color: #55494f; font-size: 11.5px; font-weight: 800; }
+.guest-row small { display: block; margin-top: 1px; color: #a17d89; font-size: 8.5px; font-weight: 700; }
+.guest-heart { color: var(--rose); font-size: 18px; }
+.add-guest { margin: 12px 0 14px; padding: 0; color: #de5480; background: transparent; font-size: 11px; font-weight: 800; }
+.confirm-button { width: 100%; }
+.guests-balloons { z-index: -1; opacity: .7; }
+.guests-balloons-left { bottom: -76px; left: -90px; width: 160px; }
+.guests-balloons-right { top: auto; right: -94px; bottom: 72px; width: 135px; transform: rotate(9deg); }
+
+/* ==========================================================================
+   12. SEÇÃO 7: SUCCESS (MENSAGEM DE AGRADECIMENTO)
+   ========================================================================== */
+.success::before { background: linear-gradient(180deg, #fff9f2 0%, #fff0ef 54%, #dff2fb 100%); }
+.success .section-content { padding-top: clamp(36px, 5.5svh, 54px); }
+.success h2 { margin-bottom: var(--space-xs); font-size: clamp(34px, 9vw, 41px); }
+.success .lead-copy { margin-bottom: var(--space-xs); font-size: 14px; line-height: 1.4; }
+.success .ornament-line { margin-bottom: var(--space-xs); }
+.success .body-copy { font-size: 13px; line-height: 1.42; }
+.success .body-copy strong { font-size: 28px; }
+.success .map-trigger-btn { position: relative; z-index: 4; margin-top: 16px; }
+.success-confetti { z-index: -2; top: 150px; left: -18%; width: 136%; opacity: .42; }
+.success-balloons { z-index: -1; top: 255px; right: -97px; width: 179px; opacity: .75; transform: rotate(11deg); }
+.success-twins { position: relative; z-index: 2; width: auto; max-width: min(64%, 255px); max-height: clamp(185px, 30svh, 285px); height: auto; flex: 1 1 auto; min-height: 0; margin: var(--gap-xs) auto; filter: drop-shadow(0 11px 12px rgba(125, 175, 196, .16)); }
+
+/* ==========================================================================
+   14. UTILITÁRIOS, ANIMAÇÕES E NOTIFICAÇÃO (TOAST)
+   ========================================================================== */
+.is-hidden { display: none; }
+
+/* Animação suave que faz os elementos surgirem ao rolar */
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .65s ease, transform .65s ease; }
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* Mensagem de alerta/notificação flutuante */
+.toast { position: fixed; z-index: 70; bottom: 21px; left: 50%; max-width: calc(100% - 38px); padding: 11px 15px; border-radius: 999px; color: #fff; background: rgba(71, 60, 65, .93); box-shadow: 0 8px 20px rgba(59, 45, 51, .18); font-size: 11px; font-weight: 700; opacity: 0; pointer-events: none; transform: translate(-50%, 16px); transition: .24s ease; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ==========================================================================
+   15. RESPONSIVIDADE (MEDIA QUERIES)
+   ========================================================================== */
+
+/* Compactação por altura: reduz apenas proporções, sem reposicionamentos rígidos. */
+@media (max-height: 700px) {
+  :root { --gap-md: clamp(9px, 1.8svh, 14px); --gap-lg: clamp(14px, 2.6svh, 20px); }
+}
+
+/* Telas maiores/computador (adiciona bordas arredondadas imitando um celular) */
+@media (min-width: 461px) {
+  .site-shell { height: min(calc(100svh - 36px), 900px); margin-top: 18px; margin-bottom: 18px; border-radius: 24px; }
+  .top-progress { top: 18px; border-radius: 6px 6px 0 0; }
+  .site-header { top: 26px; }
+}
+
+/* Acessibilidade: desliga animações se o usuário preferir menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+}
+
+/* ==========================================================================
+   MODAL DE ESCOLHA (MAPS VS WAZE)
+   ========================================================================== */
+.map-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Garante que quando tiver a classe is-hidden, ele suma da tela */
+.map-modal.is-hidden {
+  display: none !important;
+}
+
+.map-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(70, 50, 60, 0.45);
+  backdrop-filter: blur(4px);
+}
+
+.map-modal-card {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 320px);
+  background: #fff8f2;
+  border: 2px solid #ffd6e5;
+  border-radius: 24px;
+  padding: 24px 20px;
+  text-align: center;
+  box-shadow: 0 16px 36px rgba(217, 60, 115, 0.2);
+  animation: popIn 0.25s ease forwards;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.map-modal-card h3 {
+  margin: 0 0 6px;
+  color: var(--rose-strong);
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 22px;
+}
+
+.map-modal-card p {
+  margin: 0 0 18px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #74636b;
+}
+
+.map-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.map-choice-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+  box-shadow: 0 5px 0 rgba(0,0,0,0.08);
+}
+
+.google-btn {
+  background: linear-gradient(135deg, #fa91b4, #ee5789);
+}
+
+.waze-btn {
+  background: linear-gradient(135deg, #74caee, #33a8db);
+}
+
+.map-close-btn {
+  margin-top: 14px;
+  background: transparent;
+  color: #b08d9b;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+/* ============================================================================
+   16. NAVEGAÇÃO POR TELAS (STORIES / APP)
+   A base dos painéis fica concentrada na seção de estrutura principal.
+   ============================================================================ */
+.section-panel.is-active .reveal {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-panel { transition: none; }
+}
