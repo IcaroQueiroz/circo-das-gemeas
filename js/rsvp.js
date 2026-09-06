@@ -174,7 +174,7 @@ function createRsvpController({ invite, code, onConfirmed, onDeclined }) {
       .filter((guestId) => selectedGuestIds.has(guestId));
     const selectedExtraGuests = extraGuests
       .filter((guest) => selectedGuestIds.has(guest.id))
-      .map(({ id, name, type }) => ({ clientId: id, name, type }));
+      .map(({ id, name, type }) => ({ id, name, type }));
     if (!selectedIds.length && !selectedExtraGuests.length) {
       guestStatus.textContent = 'Selecione pelo menos uma pessoa para confirmar.';
       return;
@@ -201,8 +201,16 @@ function createRsvpController({ invite, code, onConfirmed, onDeclined }) {
   guestTypeOptions.forEach((option) => option.addEventListener('click', () => {
     if (extraGuests.length >= 2) return;
     const type = option.dataset.extraType;
-    const id = `extra-${nextExtraNumber}`;
-    const guest = { id, name: `Convidado extra ${nextExtraNumber}`, type, selected: true, isExtra: true };
+    const extraNumber = nextExtraNumber;
+    const id = `${code}-extra-${extraNumber}`;
+    const guest = {
+      id,
+      name: `Convidado extra ${extraNumber}`,
+      type,
+      origin: 'extra',
+      selected: true,
+      isExtra: true
+    };
     nextExtraNumber += 1;
     extraGuests.push(guest);
     selectedGuestIds.add(id);
