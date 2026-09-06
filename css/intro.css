@@ -8,7 +8,7 @@ body {
   min-height: 100%;
   margin: 0;
   overflow: hidden;
-  background: linear-gradient(180deg, #ffd5e5 0%, #ffe0ed 60%, #fff8f2 100%);
+  background: #ffd6e5;
 }
 
 .intro-screen {
@@ -17,6 +17,7 @@ body {
   display: grid;
   place-items: center;
   overflow: hidden;
+  background: #ffd6e5;
 }
 
 .intro-logo {
