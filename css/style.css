@@ -587,7 +587,8 @@ h2 {
   max-height: 760px;
   aspect-ratio: 1086 / 1448; 
   flex: 0 0 auto;
-  margin: -18px auto 0; /* puxa o card para cima */
+  margin: -5px auto 0; /* puxa o card para cima */
+  transform: translateY(2%);
 }
 
 .ticket-frame { 
@@ -694,13 +695,15 @@ h2 {
 .ticket-clouds {
   position: absolute;
   z-index: 0;
-  left: 50%;
-  right: auto;
-  bottom: -12%;
-  width: 130%;
+  right: 0;
+  bottom: -14%;
+  left: 0;
+  width: clamp(360px, 118vw, 520px);
+  margin-inline: auto;
   max-width: none;
   height: auto;
-  transform: translateX(-50%);
+  transform: none;
+  content: url("../assets/images/decorations/nuvens-candy-01.png");
   opacity: .9;
   filter: drop-shadow(0 8px 8px rgba(141, 170, 192, .16));
   pointer-events: none;
@@ -831,7 +834,28 @@ h2 {
 
 .destination-btn-img:hover, 
 .destination-btn-img:focus-visible { 
-  transform: translateY(-5%) scale(1.03);
+  transform: translateY(-7%) scale(1.04);
+}
+
+.destination-btn-img img {
+  animation: destinationButtonAttention 2.3s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes destinationButtonAttention {
+  0%, 100% {
+    filter: drop-shadow(0 4px 5px rgba(207, 73, 122, .12));
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    filter: drop-shadow(0 10px 12px rgba(207, 73, 122, .28));
+    transform: translateY(-5px) scale(1.03);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .destination-btn-img img { animation: none; }
 }
 
 /* Cenário Inferior (Placa, Tenda e Nuvens de Base) */
@@ -873,7 +897,7 @@ h2 {
   position: absolute; 
   z-index: 1;
   left: 50%;
-  bottom: -66px;
+  bottom: -120px;
   width: 135%;
   max-width: none; 
   transform: translateX(-50%);
@@ -906,12 +930,29 @@ h2 {
 .countdown-location-image-button { position: relative; z-index: 4; display: block; width: min(78%, 280px); margin: 0 auto; padding: 0; border: 0; background: transparent; box-shadow: none; }
 .countdown-location-image-button img { display: block; width: 100%; height: auto; animation: confirmPresenceHint 3.1s ease-in-out infinite; }
 .countdown-location-image-button:focus, .countdown-location-image-button:focus-visible { outline: none; box-shadow: none; }
+.countdown-declined-message {
+  position: relative;
+  z-index: 4;
+  width: min(78%, 280px);
+  margin: 0 auto;
+  padding: 12px 14px;
+  border: 1px solid rgba(238, 124, 164, .34);
+  border-radius: 16px;
+  background: rgba(255, 249, 246, .86);
+  box-shadow: 0 4px 0 rgba(235, 145, 174, .14);
+  color: #665b61;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: center;
+}
 
 /* ==========================================================================
    10. SEÇÃO 5: RSVP (CONFIRMAÇÃO DE PRESENÇA)
    ========================================================================== */
 .rsvp::before { background: linear-gradient(180deg, #fff9f2 0%, #ffedf1 60%, #f7dfe9 100%); }
 .rsvp .section-content { padding-top: clamp(36px, 5.5svh, 54px); }
+.rsvp-content { z-index: 4; }
 .rsvp h2 { max-width: 290px; margin-bottom: var(--gap-xs); font-size: clamp(29px, 7.8vw, 36px); line-height: .92; }
 .rsvp-greeting { margin: var(--space-sm) 0; color: #5e5358; font-family: "DM Serif Display", Georgia, serif; font-size: 17px; line-height: 1.28; }
 .rsvp-greeting::first-line { color: var(--rose-strong); }
@@ -920,7 +961,7 @@ h2 {
 .rsvp-actions { display: grid; width: min(100%, 292px); gap: var(--space-xs); margin: 0 auto; }
 .rsvp-image-button { width: 100%; }
 .rsvp-image-button:disabled { cursor: not-allowed; opacity: .62; }
-.rsvp-tent { position: relative; z-index: 2; width: auto; max-width: min(80%, 280px); max-height: clamp(145px, 24svh, 240px); height: auto; flex: 1 1 auto; min-height: 0; margin: var(--gap-xs) auto; opacity: 1; }
+.rsvp-tent { position: relative; z-index: 2; width: auto; max-width: min(92%, 400px); max-height: clamp(208px, 34.5svh, 345px); height: auto; flex: 1 1 auto; min-height: 0; margin: var(--gap-xs) auto; opacity: 1; }
 .inline-status { position: relative; z-index: 4; min-height: 1em; margin: 8px 0 0; color: var(--rose-deep); font-size: 11px; font-weight: 700; }
 .rsvp .section-next { margin-top: var(--gap-xs); }
 

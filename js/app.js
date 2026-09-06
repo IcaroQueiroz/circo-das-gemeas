@@ -283,6 +283,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     setHeroEntryImage('assets/images/ui/entrar-no-circo.png', 'Entrar no circo');
   };
 
+  const setCountdownResponseState = (status) => {
+    const isDeclined = status === 'declined';
+    const locationButton = document.querySelector('#countdown-location-btn');
+    const declinedMessage = document.querySelector('#countdown-declined-message');
+
+    locationButton.classList.toggle('is-hidden', isDeclined);
+    locationButton.setAttribute('aria-hidden', String(isDeclined));
+    declinedMessage.classList.toggle('is-hidden', !isDeclined);
+    declinedMessage.setAttribute('aria-hidden', String(!isDeclined));
+  };
+
   const showInvitationLoadError = () => {
     dataState = 'error';
     retryInvitationData = startInvitationRequest;
@@ -323,6 +334,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       setFamilyGreeting(invite.familyLabel);
       enableRsvpActions();
       setResponseNavigation(Boolean(currentStatus), currentStatus);
+      setCountdownResponseState(currentStatus);
 
       if (isConfirmed) {
         const success = document.querySelector('#confirmacao');
@@ -339,6 +351,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           code,
           onDeclined: () => {
             setResponseNavigation(true, 'declined');
+            setCountdownResponseState('declined');
             showToast('Resposta registrada. Obrigado por avisar!');
           },
           onConfirmed: () => {

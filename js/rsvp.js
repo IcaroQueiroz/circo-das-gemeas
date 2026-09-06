@@ -153,7 +153,10 @@ function createRsvpController({ invite, code, onConfirmed, onDeclined }) {
         heroEntryButton.href = '#contagem';
         heroEntryButton.innerHTML = 'O Espetáculo Começa em... <span aria-hidden="true">↗</span>';
         onDeclined?.();
-        window.setTimeout(() => window.goToSection?.('#contagem'), 700);
+        const farewell = document.querySelector('#despedida');
+        farewell.classList.remove('is-hidden');
+        farewell.setAttribute('aria-hidden', 'false');
+        window.goToSection?.('#despedida');
       } catch (error) {
         rsvpStatus.textContent = getErrorMessage(error);
       } finally {
