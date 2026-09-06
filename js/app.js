@@ -43,9 +43,21 @@ if (window.visualViewport) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  stabilizeViewportHeight();
   const { code } = getInviteFromUrl();
   const viewportReloadKey = code ? `viewport-reload:${code}` : null;
+  const alreadyReloaded = viewportReloadKey ? sessionStorage.getItem(viewportReloadKey) : null;
+  console.debug('[viewport reload early]', {
+    ios: isIOSDevice(),
+    code,
+    alreadyReloaded
+  });
+  if (code && isIOSDevice() && viewportReloadKey && !alreadyReloaded) {
+    sessionStorage.setItem(viewportReloadKey, '1');
+    window.location.reload();
+    return;
+  }
+
+  stabilizeViewportHeight();
   const toast = document.querySelector('#toast');
   const urlParams = new URLSearchParams(window.location.search);
   const navigationEntry = performance.getEntriesByType('navigation')[0];
@@ -364,18 +376,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!statusPayload?.ok || statusPayload.valid !== true) {
           showUnavailable('Convite inválido. Verifique o link recebido e tente novamente.');
           goToSection('#abertura');
-          return;
-        }
-
-        const alreadyReloaded = viewportReloadKey && sessionStorage.getItem(viewportReloadKey);
-        console.debug('[viewport reload]', {
-          ios: isIOSDevice(),
-          code,
-          alreadyReloaded
-        });
-        if (isIOSDevice() && !alreadyReloaded) {
-          sessionStorage.setItem(viewportReloadKey, '1');
-          window.location.reload();
           return;
         }
 
