@@ -1,0 +1,62 @@
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ffd5e5 0%, #ffe0ed 60%, #fff8f2 100%);
+}
+
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.intro-logo {
+  display: block;
+  width: min(90vw, 430px);
+  height: auto;
+  object-fit: contain;
+  opacity: 0;
+  transform: translateY(14px) scale(.88);
+  animation:
+    intro-logo-enter 500ms cubic-bezier(.22, .75, .3, 1) forwards,
+    intro-logo-exit 450ms cubic-bezier(.4, 0, .2, 1) 1350ms forwards;
+}
+
+@keyframes intro-logo-enter {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes intro-logo-exit {
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-logo {
+    animation:
+      intro-logo-fade-in 180ms ease-out forwards,
+      intro-logo-fade-out 180ms ease-in 550ms forwards;
+  }
+
+  @keyframes intro-logo-fade-in {
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes intro-logo-fade-out {
+    to { opacity: 0; transform: none; }
+  }
+}

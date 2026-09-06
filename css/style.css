@@ -72,6 +72,15 @@ body {
   font-family: Nunito, Arial, sans-serif; 
 }
 
+html.is-transitioning-to-invite body::after {
+  position: fixed;
+  z-index: 999999;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(180deg, #ffd5e5 0%, #ffe0ed 60%, #fff8f2 100%);
+}
+
 /* Herança padrão para botões e links */
 button, a { font: inherit; }
 a { color: inherit; text-decoration: none; }

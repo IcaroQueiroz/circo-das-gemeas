@@ -1,5 +1,7 @@
 let lastViewportHeight = 0;
 
+const isIOSDevice = () => /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
 const updateViewportHeight = () => {
   const height = Math.round(window.visualViewport?.height || window.innerHeight);
 
@@ -43,18 +45,48 @@ if (window.visualViewport) {
 document.addEventListener('DOMContentLoaded', async () => {
   stabilizeViewportHeight();
   const { code } = getInviteFromUrl();
+  const viewportReloadKey = code ? `viewport-transition-reload:${code}` : null;
+  const shouldTransitionReload = Boolean(
+    code && isIOSDevice() && viewportReloadKey && !sessionStorage.getItem(viewportReloadKey)
+  );
+  if (shouldTransitionReload) document.documentElement.classList.add('is-transitioning-to-invite');
   const toast = document.querySelector('#toast');
   const urlParams = new URLSearchParams(window.location.search);
   const navigationEntry = performance.getEntriesByType('navigation')[0];
   const shouldResetSession = urlParams.has('reset') || navigationEntry?.type === 'reload';
   if (shouldResetSession) {
+    const transitionReloadValue = viewportReloadKey && sessionStorage.getItem(viewportReloadKey);
     sessionStorage.clear();
+    if (viewportReloadKey && transitionReloadValue) {
+      sessionStorage.setItem(viewportReloadKey, transitionReloadValue);
+    }
     if (code) localStorage.removeItem(`rsvp:${code}`);
     if (urlParams.has('reset')) {
       const cleanUrl = window.location.pathname + (code ? `?c=${code}` : '');
       window.history.replaceState({}, document.title, cleanUrl);
     }
   }
+
+  const scheduleTransitionReload = () => {
+    if (!shouldTransitionReload) return;
+
+    const reloadAfterViewportSettles = () => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          window.setTimeout(() => {
+            if (sessionStorage.getItem(viewportReloadKey)) return;
+            sessionStorage.setItem(viewportReloadKey, '1');
+            window.location.reload();
+          }, 250);
+        });
+      });
+    };
+
+    if (document.readyState === 'complete') reloadAfterViewportSettles();
+    else window.addEventListener('load', reloadAfterViewportSettles, { once: true });
+  };
+
+  scheduleTransitionReload();
 
   const panels = [...document.querySelectorAll('.section-panel')];
   const heroEntryButton = document.querySelector('.hero-footer .primary-button');
