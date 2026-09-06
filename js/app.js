@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const image = new Image();
     image.src = src;
   });
-  const countdownNextButton = document.querySelector('#contagem .section-next');
   const familyGreeting = document.querySelector('#family-greeting');
   const rsvpActions = document.querySelector('#rsvp-actions');
   const rsvpStatus = document.querySelector('#rsvp-status');
@@ -201,16 +200,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       heroEntryButton.href = '#contagem';
       heroEntryButton.removeAttribute('aria-disabled');
       setHeroEntryImage('assets/images/ui/espetaculo-comeca.png', 'O espetáculo começa em');
-      countdownNextButton.href = '#local';
-      countdownNextButton.setAttribute('aria-label', 'Ver localização do evento');
       return;
     }
 
     heroEntryButton.href = '#apresentacao';
     heroEntryButton.removeAttribute('aria-disabled');
     setHeroEntryImage('assets/images/ui/entrar-no-circo.png', 'Entrar no circo');
-    countdownNextButton.href = '#rsvp';
-    countdownNextButton.setAttribute('aria-label', 'Rolar para a confirmação');
   };
 
   const showInvitationLoadError = () => {
@@ -328,7 +323,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         else if (invitationLoadError) showInvitationLoadError();
       })
       .catch((error) => {
-        console.error('Não foi possível verificar o convite.', error);
+        console.error('Falha durante validação/processamento do convite:', error);
         retryAccess = startStatusRequest;
         showUnavailable('Não foi possível verificar o convite. Tente novamente.', true);
       });
