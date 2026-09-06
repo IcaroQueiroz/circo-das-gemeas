@@ -3,24 +3,45 @@ let lastViewportHeight = 0;
 const updateViewportHeight = () => {
   const height = Math.round(window.visualViewport?.height || window.innerHeight);
 
+  if (!height || height < 300) return;
   if (Math.abs(height - lastViewportHeight) < 2) return;
 
   lastViewportHeight = height;
   document.documentElement.style.setProperty('--viewport-h', `${height}px`);
+  document.documentElement.getBoundingClientRect();
+  console.debug('[viewport]', {
+    visualViewportHeight: window.visualViewport?.height,
+    innerHeight: window.innerHeight,
+    clientHeight: document.documentElement.clientHeight,
+    cssViewport: getComputedStyle(document.documentElement).getPropertyValue('--viewport-h')
+  });
 };
 
-updateViewportHeight();
-window.addEventListener('resize', updateViewportHeight);
-window.addEventListener('orientationchange', updateViewportHeight);
-window.addEventListener('pageshow', () => {
+const requestViewportUpdate = () => {
   requestAnimationFrame(updateViewportHeight);
+};
+
+const stabilizeViewportHeight = () => {
+  requestViewportUpdate();
+  [100, 300, 700, 1200].forEach((delay) => {
+    window.setTimeout(requestViewportUpdate, delay);
+  });
+};
+
+window.addEventListener('resize', requestViewportUpdate);
+window.addEventListener('orientationchange', stabilizeViewportHeight);
+window.addEventListener('load', stabilizeViewportHeight);
+window.addEventListener('pageshow', stabilizeViewportHeight);
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') stabilizeViewportHeight();
 });
 
 if (window.visualViewport) {
-  window.visualViewport.addEventListener('resize', updateViewportHeight);
+  window.visualViewport.addEventListener('resize', requestViewportUpdate);
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  stabilizeViewportHeight();
   const { code } = getInviteFromUrl();
   const toast = document.querySelector('#toast');
   const urlParams = new URLSearchParams(window.location.search);
