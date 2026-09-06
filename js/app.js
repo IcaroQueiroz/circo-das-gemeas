@@ -1,7 +1,5 @@
 let lastViewportHeight = 0;
 
-const isIOSDevice = () => /iPhone|iPad|iPod/i.test(navigator.userAgent);
-
 const updateViewportHeight = () => {
   const height = Math.round(window.visualViewport?.height || window.innerHeight);
 
@@ -43,31 +41,14 @@ if (window.visualViewport) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const { code } = getInviteFromUrl();
-  const viewportReloadKey = code ? `viewport-reload:${code}` : null;
-  const alreadyReloaded = viewportReloadKey ? sessionStorage.getItem(viewportReloadKey) : null;
-  console.debug('[viewport reload early]', {
-    ios: isIOSDevice(),
-    code,
-    alreadyReloaded
-  });
-  if (code && isIOSDevice() && viewportReloadKey && !alreadyReloaded) {
-    sessionStorage.setItem(viewportReloadKey, '1');
-    window.location.reload();
-    return;
-  }
-
   stabilizeViewportHeight();
+  const { code } = getInviteFromUrl();
   const toast = document.querySelector('#toast');
   const urlParams = new URLSearchParams(window.location.search);
   const navigationEntry = performance.getEntriesByType('navigation')[0];
   const shouldResetSession = urlParams.has('reset') || navigationEntry?.type === 'reload';
   if (shouldResetSession) {
-    const viewportReloadValue = viewportReloadKey && sessionStorage.getItem(viewportReloadKey);
     sessionStorage.clear();
-    if (viewportReloadKey && viewportReloadValue) {
-      sessionStorage.setItem(viewportReloadKey, viewportReloadValue);
-    }
     if (code) localStorage.removeItem(`rsvp:${code}`);
     if (urlParams.has('reset')) {
       const cleanUrl = window.location.pathname + (code ? `?c=${code}` : '');
