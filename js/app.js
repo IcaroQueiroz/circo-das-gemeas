@@ -1,26 +1,23 @@
 let lastViewportHeight = 0;
-let lastViewportTop = -1;
 
-const updateVisualViewport = () => {
-  const viewport = window.visualViewport;
-  const height = Math.round(viewport?.height || window.innerHeight);
-  const top = Math.round(viewport?.offsetTop || 0);
+const updateViewportHeight = () => {
+  const height = Math.round(window.visualViewport?.height || window.innerHeight);
 
-  if (Math.abs(height - lastViewportHeight) < 2 && Math.abs(top - lastViewportTop) < 2) return;
+  if (Math.abs(height - lastViewportHeight) < 2) return;
 
   lastViewportHeight = height;
-  lastViewportTop = top;
   document.documentElement.style.setProperty('--viewport-h', `${height}px`);
-  document.documentElement.style.setProperty('--viewport-top', `${top}px`);
 };
 
-updateVisualViewport();
-window.addEventListener('resize', updateVisualViewport);
-window.addEventListener('orientationchange', updateVisualViewport);
+updateViewportHeight();
+window.addEventListener('resize', updateViewportHeight);
+window.addEventListener('orientationchange', updateViewportHeight);
+window.addEventListener('pageshow', () => {
+  requestAnimationFrame(updateViewportHeight);
+});
 
 if (window.visualViewport) {
-  window.visualViewport.addEventListener('resize', updateVisualViewport);
-  window.visualViewport.addEventListener('scroll', updateVisualViewport);
+  window.visualViewport.addEventListener('resize', updateViewportHeight);
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
