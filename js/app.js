@@ -1,3 +1,28 @@
+let lastViewportHeight = 0;
+let lastViewportTop = -1;
+
+const updateVisualViewport = () => {
+  const viewport = window.visualViewport;
+  const height = Math.round(viewport?.height || window.innerHeight);
+  const top = Math.round(viewport?.offsetTop || 0);
+
+  if (Math.abs(height - lastViewportHeight) < 2 && Math.abs(top - lastViewportTop) < 2) return;
+
+  lastViewportHeight = height;
+  lastViewportTop = top;
+  document.documentElement.style.setProperty('--viewport-h', `${height}px`);
+  document.documentElement.style.setProperty('--viewport-top', `${top}px`);
+};
+
+updateVisualViewport();
+window.addEventListener('resize', updateVisualViewport);
+window.addEventListener('orientationchange', updateVisualViewport);
+
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', updateVisualViewport);
+  window.visualViewport.addEventListener('scroll', updateVisualViewport);
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   const { code } = getInviteFromUrl();
   const toast = document.querySelector('#toast');

@@ -3,7 +3,8 @@
    Cores, sombras, espaçamentos e medidas reutilizáveis em todo o site.
    ========================================================================== */
 :root {
-  --viewport-h: 100svh;
+  --viewport-h: 100vh;
+  --viewport-top: 0px;
   /* Paleta de Cores */
   --ink: #50464b;             /* Cor principal do texto (tom grafite quente) */
   --rose: #f98fb4;            /* Rosa claro base */
@@ -35,6 +36,12 @@
   --panel-bottom: calc(var(--gap-sm) + env(safe-area-inset-bottom));
   --section-top: var(--panel-top); /* Alias legado */
   --section-bottom: var(--panel-bottom);
+}
+
+@supports (height: 100dvh) {
+  :root {
+    --viewport-h: 100dvh;
+  }
 }
 
 /* ==========================================================================
@@ -77,12 +84,15 @@ img { display: block; max-width: 100%; }
    Simula a tela de um smartphone vertical centralizado.
    ========================================================================== */
 .site-shell {
-  position: relative;
+  position: fixed;
+  top: var(--viewport-top);
+  left: 50%;
   width: min(100%, 460px); /* No mobile usa 100%; no computador limita a 460px */
   height: 100vh;
   height: var(--viewport-h);
   min-height: 0;
-  margin: 0 auto;
+  margin: 0;
+  transform: translateX(-50%);
   overflow: hidden;
   background: var(--cream);
   box-shadow: 0 0 56px rgba(137, 89, 128, .2); /* Sombra que destaca o layout no desktop */
@@ -1043,7 +1053,7 @@ h2 {
 
 /* Telas maiores/computador (adiciona bordas arredondadas imitando um celular) */
 @media (min-width: 461px) {
-  .site-shell { height: min(calc(100svh - 36px), 900px); margin-top: 18px; margin-bottom: 18px; border-radius: 24px; }
+  .site-shell { top: 18px; height: min(calc(var(--viewport-h) - 36px), 900px); margin: 0; border-radius: 24px; }
   .top-progress { top: 18px; border-radius: 6px 6px 0 0; }
   .site-header { top: 26px; }
 }
